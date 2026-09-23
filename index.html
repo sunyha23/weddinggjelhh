@@ -2453,23 +2453,71 @@
     background: rgba(200,73,73,0.09) !important;
   }
 
-  /* Let the invitation copy follow both the ticket width and its changing height. */
+  /* Keep the ticket layout deterministic while sizing it from the viewport. */
+  .intro-backdrop {
+    padding: max(14px, env(safe-area-inset-top, 0px)) 10px
+             max(14px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+
   .save-ticket {
     container-type: size;
+    width: min(calc(100% - 4px), 456px) !important;
+    height: calc(100svh - 28px) !important;
+    max-height: 820px !important;
+    min-height: min(580px, calc(100svh - 28px)) !important;
   }
 
   .msg-ghost,
   .save-message {
-    font-size: clamp(14px, min(4.1cqw, 2.35cqh), 18px) !important;
+    font-size: clamp(14px, min(4.05cqw, 2.25cqh), 18px) !important;
+    line-height: 2 !important;
   }
 
   .save-message-wrap {
-    transform: translateY(clamp(5px, 2.2cqh, 18px)) !important;
+    transform: none !important;
+    min-height: 0;
+    padding: clamp(8px, 1.8cqh, 15px) clamp(20px, 7.5cqw, 34px) !important;
+  }
+
+  .save-message {
+    left: clamp(20px, 7.5cqw, 34px) !important;
+    right: clamp(20px, 7.5cqw, 34px) !important;
+    top: 50% !important;
+    bottom: auto !important;
+    display: block;
+    transform: translateY(-50%);
+    white-space: normal;
+  }
+
+  .save-bottom-img {
+    justify-content: center !important;
+    align-items: center !important;
   }
 
   /* Remove the paper texture layer that stayed fixed while the page scrolled. */
   body::before {
     display: none !important;
+  }
+
+  /* Use white for the area visible outside the centered mobile invitation. */
+  html {
+    background: #ffffff !important;
+    background-image: none !important;
+  }
+
+  body {
+    max-width: 480px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Prevent iOS from zooming the page when a form field receives focus. */
+  @media (max-width: 768px) {
+    input,
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
   }
 </style>
 </head>
@@ -2550,11 +2598,10 @@
   <section class="datecount">
     <div class="section-mark">&#10039;</div>
     <div class="section-label">Calendar</div>
-    <p class="calendar-date">2027.02.20.SAT.</p>
+    <p class="calendar-date">2027년 2월 20일 토요일</p>
     <p class="calendar-time">19:00 PM</p>
     <div class="calendar" id="calendar"></div>
     <p id="countdown-text">결혼이 <b id="d-day">-</b>일 남았습니다</p>
-    <div class="countdown" id="countdown-units"></div>
   </section>
 
   <!-- 5. 포토 갤러리 -->
@@ -2926,25 +2973,15 @@ function updateCountdown(){
   const now = new Date();
   const diff = CONFIG.weddingDate - now;
   const dEl = document.getElementById('d-day');
-  const units = document.getElementById('countdown-units');
   if(diff <= 0){
     dEl.textContent = "D-DAY";
-    units.innerHTML = '';
     return;
   }
   const days = Math.floor(diff / 86400000);
-  const hours = Math.floor((diff % 86400000) / 3600000);
-  const mins = Math.floor((diff % 3600000) / 60000);
-  const secs = Math.floor((diff % 60000) / 1000);
   dEl.textContent = days;
-  units.innerHTML = `
-    <div class="unit"><div class="num">${days}</div><div class="label">일</div></div>
-    <div class="unit"><div class="num">${hours}</div><div class="label">시간</div></div>
-    <div class="unit"><div class="num">${mins}</div><div class="label">분</div></div>
-    <div class="unit"><div class="num">${secs}</div><div class="label">초</div></div>`;
 }
 updateCountdown();
-setInterval(updateCountdown, 1000);
+setInterval(updateCountdown, 60000);
 
 // ---------- 갤러리: 이미지를 누르면 다음 사진으로 이동, 마지막 다음에는 첫 사진 ----------
 const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
@@ -3052,13 +3089,7 @@ ticketEl.addEventListener('keydown', (e)=>{
 // ---------- 중앙 문구 한 글자씩 부드럽게 타이핑되는 효과 (최종 위치에 고정한 채로 채워짐) ----------
 const typedText = "아름답고 새로운 날,\n서로에게 꼭 필요한 사람이 되어\n평생을 함께하기로 약속합니다";
 function typeMessage(){
-  const wrap = document.getElementById('msgWrap');
-  const ghost = document.getElementById('msgGhost');
   const el = document.getElementById('typedMessage');
-
-  const wrapRect = wrap.getBoundingClientRect();
-  const ghostRect = ghost.getBoundingClientRect();
-  el.style.top = (ghostRect.top - wrapRect.top) + 'px';
 
   const interval = 55;   // 글자 시작 간격(ms)
   const charAnim = 400;  // 글자 하나가 부드럽게 나타나는 데 걸리는 시간(ms)
