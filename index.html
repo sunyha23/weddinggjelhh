@@ -2521,6 +2521,22 @@
 
   /* Prevent iOS from zooming the page when a form field receives focus. */
   @media (max-width: 768px) {
+    .hero {
+      height: var(--hero-locked-height, 100svh) !important;
+      min-height: var(--hero-locked-height, 100svh) !important;
+    }
+
+    .hero-visual {
+      height: calc(var(--hero-locked-height, 100svh) - 76px) !important;
+      min-height: 0 !important;
+      flex: 0 0 calc(var(--hero-locked-height, 100svh) - 76px) !important;
+    }
+
+    .hero-bg {
+      transform: none !important;
+      transition: none !important;
+    }
+
     input,
     textarea,
     select {
@@ -2852,6 +2868,13 @@
 </div>
 
 <script>
+// Lock the mobile hero to its initial visible height so browser chrome changes
+// while scrolling cannot resize or reposition the image.
+const initialHeroHeight = Math.round(window.visualViewport?.height || window.innerHeight);
+if (initialHeroHeight > 0) {
+  document.documentElement.style.setProperty('--hero-locked-height', `${initialHeroHeight}px`);
+}
+
 // ---------- 재접속/새로고침 시 항상 히어로부터 시작 ----------
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
