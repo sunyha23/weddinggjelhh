@@ -295,8 +295,8 @@
     display: block;
     width: auto;
     height: auto;
-    max-width: min(88vw, 430px);
-    max-height: 78vh;
+    max-width: min(calc(100vw - 118px), 360px);
+    max-height: 72vh;
     object-fit: contain;
     filter: drop-shadow(0 12px 22px rgba(22, 31, 56, 0.2));
     -webkit-user-drag: none;
@@ -473,6 +473,26 @@
   .rsvp-success .check { font-size: 34px; color: var(--blue); margin-bottom: 12px; }
   #rsvp-modal { background: #ffffff; }
   #rsvp-modal::before { display: none; }
+
+  /* Show the full RSVP form on common mobile screens without scrolling. */
+  #rsvp-modal {
+    max-height: calc(100svh - max(12px, env(safe-area-inset-top))) !important;
+    padding: 18px 20px calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #rsvp-modal .modal-title { margin-bottom: 10px !important; }
+  #rsvp-modal .rsvp-form label { margin: 8px 0 4px; }
+  #rsvp-modal .segmented button,
+  #rsvp-modal .radio-row label,
+  #rsvp-modal .guest-stepper {
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+  #rsvp-modal .rsvp-form input[type="text"] { padding: 8px 10px; }
+  #rsvp-modal .rsvp-submit {
+    height: 40px !important;
+    min-height: 40px !important;
+    margin-top: 14px;
+  }
 
   /* ---------- 방명록 ---------- */
   .guestbook h2 { font-size: 19px; text-align: center; margin-bottom: 20px; }
@@ -2406,30 +2426,94 @@
     gap: 12px;
   }
 
-  #contact-modal .contact-col h3 {
-    font-family: 'Jost', 'Noto Sans KR', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 10px;
+  #contact-modal .contact-group {
+    flex: 1;
+    min-width: 0;
   }
 
-  #contact-modal .contact-person {
-    min-height: 112px;
-    padding: 12px;
+  #contact-modal .contact-col {
+    overflow: hidden;
+    padding: 0 12px;
     background: rgba(47,95,209,0.04);
     border: 1px solid rgba(47,95,209,0.12);
     border-radius: 3px;
   }
 
+  #contact-modal .contact-group > h3 {
+    font-family: 'Jost', 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0 0 8px;
+    padding: 0;
+    color: var(--text);
+    text-align: center;
+  }
+
+  #contact-modal .contact-person {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 8px;
+    min-height: 78px;
+    margin: 0;
+    padding: 12px 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(47,95,209,0.14);
+    border-radius: 0;
+  }
+
+  #contact-modal .contact-person:last-child {
+    border-bottom: 0;
+  }
+
   #contact-modal .contact-person .relation,
   #contact-modal .contact-person .name {
     font-family: 'Noto Sans KR', sans-serif;
+    grid-column: 1;
+    margin-bottom: 0;
+    text-align: left;
+  }
+
+  #contact-modal .contact-person .relation {
+    align-self: end;
+  }
+
+  #contact-modal .contact-person .name {
+    align-self: start;
+    font-weight: 600;
+  }
+
+  #contact-modal .contact-icons {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    gap: 6px;
   }
 
   #contact-modal .contact-icons a {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
     border-radius: 3px;
+  }
+
+  #contact-modal .contact-icons svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .gallery img,
+  .gallery-lightbox img {
+    pointer-events: none;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
   }
 
   .address-row {
@@ -2541,7 +2625,7 @@
   }
 
   #guestbook-write-modal .rsvp-like-form label {
-    margin: 9px 0 4px !important;
+    margin: 8px 0 4px !important;
   }
 
   #guestbook-write-modal .rsvp-like-form input,
@@ -2549,12 +2633,32 @@
     padding: 9px 10px !important;
   }
 
+  #guestbook-write-modal .rsvp-like-form input {
+    margin-bottom: 0 !important;
+  }
+
   #guestbook-write-modal .rsvp-like-form textarea {
     min-height: 82px !important;
+    margin-bottom: 0 !important;
+    padding-right: 58px !important;
+    padding-bottom: 30px !important;
   }
 
   #guestbook-write-modal .gb-char-count {
-    margin-top: 3px;
+    position: absolute;
+    right: 14px;
+    bottom: 12px;
+    margin: 0 !important;
+    font-size: 11.5px;
+    font-weight: 400;
+    line-height: 1;
+    color: rgba(31, 58, 117, 0.58) !important;
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  #guestbook-write-modal .gb-message-field {
+    position: relative;
   }
 
   #guestbook-write-modal .gb-helper {
@@ -2931,23 +3035,27 @@
       <button class="modal-close" onclick="closeModal('contact-modal')">✕</button>
       <div class="modal-title">연락하기</div>
       <div class="contact-columns">
-        <div class="contact-col">
+        <div class="contact-group">
           <h3>신랑측</h3>
+          <div class="contact-col">
           <div class="contact-person"><div class="relation">신랑</div><div class="name">임한흠</div>
-            <div class="contact-icons"><a href="tel:01058062366">☎</a><a href="sms:01058062366">✉</a></div></div>
+            <div class="contact-icons"><a href="tel:01058062366">☎</a><a href="sms:01058062366" aria-label="임한흠에게 문자"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H9l-4 4V5Z"/></svg></a></div></div>
           <div class="contact-person"><div class="relation">신랑 아버지</div><div class="name">임성범</div>
-            <div class="contact-icons"><a href="tel:01076800191">☎</a><a href="sms:01076800191">✉</a></div></div>
+            <div class="contact-icons"><a href="tel:01076800191">☎</a><a href="sms:01076800191" aria-label="임성범에게 문자"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H9l-4 4V5Z"/></svg></a></div></div>
           <div class="contact-person"><div class="relation">신랑 어머니</div><div class="name">김승희</div>
-            <div class="contact-icons"><a href="tel:01076372555">☎</a><a href="sms:01076372555">✉</a></div></div>
+            <div class="contact-icons"><a href="tel:01076372555">☎</a><a href="sms:01076372555" aria-label="김승희에게 문자"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H9l-4 4V5Z"/></svg></a></div></div>
+          </div>
         </div>
-        <div class="contact-col">
+        <div class="contact-group">
           <h3>신부측</h3>
+          <div class="contact-col">
           <div class="contact-person"><div class="relation">신부</div><div class="name">고주은</div>
-            <div class="contact-icons"><a href="tel:01029971739">☎</a><a href="sms:01029971739">✉</a></div></div>
+            <div class="contact-icons"><a href="tel:01029971739">☎</a><a href="sms:01029971739" aria-label="고주은에게 문자"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H9l-4 4V5Z"/></svg></a></div></div>
           <div class="contact-person"><div class="relation">신부 아버지</div><div class="name">고양식</div>
-            <div class="contact-icons"><a href="tel:01025604490">☎</a><a href="sms:01025604490">✉</a></div></div>
+            <div class="contact-icons"><a href="tel:01025604490">☎</a><a href="sms:01025604490" aria-label="고양식에게 문자"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H9l-4 4V5Z"/></svg></a></div></div>
           <div class="contact-person"><div class="relation">신부 어머니</div><div class="name">안정현</div>
-            <div class="contact-icons"><a href="tel:01023521739">☎</a><a href="sms:01023521739">✉</a></div></div>
+            <div class="contact-icons"><a href="tel:01023521739">☎</a><a href="sms:01023521739" aria-label="안정현에게 문자"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H9l-4 4V5Z"/></svg></a></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -3032,9 +3140,11 @@
                maxlength="12" required>
 
         <label for="gb-content">메시지</label>
-        <textarea id="gb-content" placeholder="축하의 마음을 남겨 주세요"
-                  maxlength="200" required></textarea>
-        <div class="gb-char-count" id="gb-count">0/200</div>
+        <div class="gb-message-field">
+          <textarea id="gb-content" placeholder="축하의 마음을 남겨 주세요"
+                    maxlength="200" required></textarea>
+          <span class="gb-char-count" id="gb-count">0/200</span>
+        </div>
 
         <label for="gb-password">비밀번호</label>
         <input type="password" id="gb-password" placeholder="숫자 4자리"
@@ -3268,6 +3378,10 @@ document.querySelectorAll('.gallery img, .gallery-lightbox img').forEach(image =
   image.addEventListener('contextmenu', event => event.preventDefault());
   image.addEventListener('dragstart', event => event.preventDefault());
 });
+document.querySelectorAll('.gallery, .gallery-lightbox').forEach(area => {
+  area.addEventListener('contextmenu', event => event.preventDefault());
+  area.addEventListener('dragstart', event => event.preventDefault());
+});
 document.addEventListener('gesturestart', event => event.preventDefault(), { passive: false });
 showGalleryPage(0);
 
@@ -3278,7 +3392,7 @@ function buildCalendar(){
   const first = new Date(y, m, 1);
   const startDow = first.getDay(); // 일=0 ... 토=6
   const daysInMonth = new Date(y, m+1, 0).getDate();
-  const dows = ['SUN','M','T','W','T','F','SAT'];
+  const dows = ['S','M','T','W','T','F','S'];
   const targetDay = d.getDate();
 
   let html = `<div class="cal-grid">`;
