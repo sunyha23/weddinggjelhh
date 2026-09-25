@@ -3291,7 +3291,7 @@ button,
 .save-top,
 .save-line,
 .save-info {
-  transform: translateY(-14px);
+  transform: translateY(-22px);
 }
 .save-info {
   padding-top: 16px !important;
@@ -3333,6 +3333,19 @@ button,
   color: #fff !important;
   background: var(--blue) !important;
   border-color: var(--blue) !important;
+}
+
+
+
+/* True cutout tear punches and lower tear section */
+.ticket-tear::before,
+.ticket-tear::after {
+  display: none !important;
+}
+.ticket-tear,
+.save-bottom-img,
+.save-screenshot-note {
+  transform: translateY(10px);
 }
 
 </style>
@@ -4202,7 +4215,22 @@ function layoutScallops(){
     const radius = p.size / 2;
     return `M ${p.x - radius} ${y} a ${radius} ${radius} 0 1 0 ${p.size} 0 a ${radius} ${radius} 0 1 0 -${p.size} 0`;
   }).join(' ')).join(' ');
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><path fill="white" fill-rule="evenodd" d="M 0 0 H ${width} V ${height} H 0 Z ${circlePath}"/></svg>`;
+
+  // Cut the two tear-line punches through the ticket mask so they reveal
+  // the same blurred background as every other ticket punch.
+  const tearEl = ticketEl.querySelector('.ticket-tear');
+  let tearPunchPath = '';
+  if(tearEl){
+    const ticketRect = ticketEl.getBoundingClientRect();
+    const tearRect = tearEl.getBoundingClientRect();
+    const tearY = tearRect.top - ticketRect.top + tearRect.height / 2;
+    const tearRadius = Math.max(12, Math.min(17, width * 0.036));
+    tearPunchPath = [0, width].map(px =>
+      `M ${px - tearRadius} ${tearY} a ${tearRadius} ${tearRadius} 0 1 0 ${tearRadius * 2} 0 a ${tearRadius} ${tearRadius} 0 1 0 -${tearRadius * 2} 0`
+    ).join(' ');
+  }
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><path fill="white" fill-rule="evenodd" d="M 0 0 H ${width} V ${height} H 0 Z ${circlePath} ${tearPunchPath}"/></svg>`;
   const mask = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
   ticketEl.style.webkitMaskImage = mask;
   ticketEl.style.maskImage = mask;
