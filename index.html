@@ -3281,6 +3281,60 @@ button,
   -webkit-tap-highlight-color: transparent !important;
 }
 
+
+
+/* 2026-09-25 ticket upper layout refinement */
+.save-message-wrap {
+  transform: translateY(-9px) !important;
+}
+
+.save-top,
+.save-line,
+.save-info {
+  transform: translateY(-14px);
+}
+.save-info {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+.save-info .info-row {
+  margin-bottom: 3px !important;
+  line-height: 1.28 !important;
+}
+.save-info .info-row .label,
+.save-info .info-row .value {
+  line-height: 1.28 !important;
+}
+.save-info .info-row:last-child .value {
+  line-height: 1.48 !important;
+}
+.ticket-tear {
+  filter: drop-shadow(0 -1px 0 rgba(20, 43, 112, .48))
+          drop-shadow(0 1px 1px rgba(255, 255, 255, .34));
+}
+.save-bottom-img img {
+  width: clamp(136px, 44%, 204px) !important;
+  max-width: 204px !important;
+}
+
+
+
+/* RSVP unselected and compact choice spacing */
+#rsvp-modal .radio-row {
+  margin-top: 0 !important;
+}
+#rsvp-modal .radio-row label {
+  margin: 0 !important;
+  color: var(--blue) !important;
+  background: #fff !important;
+  border-color: rgba(38, 91, 216, .42) !important;
+}
+#rsvp-modal .radio-row label:has(input[type="radio"]:checked) {
+  color: #fff !important;
+  background: var(--blue) !important;
+  border-color: var(--blue) !important;
+}
+
 </style>
 </head>
 <body class="intro-active">
@@ -3296,7 +3350,7 @@ button,
     <div class="save-info">
       <div class="info-row"><span class="label">Date</span><span class="value">2027. 02. 20. Sat.</span></div>
       <div class="info-row"><span class="label">Time</span><span class="value">19:00 PM</span></div>
-      <div class="info-row"><span class="label">Place</span><span class="value">더채플앳청담<br>서울특별시 강남구 논현동 94-9</span></div>
+      <div class="info-row"><span class="label">Place</span><span class="value">더채플앳청담 채플홀 6F<br>서울특별시 강남구 논현동 94-9</span></div>
     </div>
     <div class="save-line"></div>
 
@@ -3591,7 +3645,7 @@ button,
 
         <label>참석 여부</label>
         <div class="radio-row">
-          <label><input type="radio" name="attendance" value="참석" checked> 참석</label>
+          <label><input type="radio" name="attendance" value="참석"> 참석</label>
           <label><input type="radio" name="attendance" value="불참석"> 불참석</label>
         </div>
 
@@ -3608,7 +3662,7 @@ button,
 
         <label>식사 여부</label>
         <div class="radio-row">
-          <label><input type="radio" name="meal" value="예정" checked> 예정</label>
+          <label><input type="radio" name="meal" value="예정"> 예정</label>
           <label><input type="radio" name="meal" value="안함"> 안함</label>
           <label><input type="radio" name="meal" value="미정"> 미정</label>
         </div>
