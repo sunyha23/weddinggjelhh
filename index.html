@@ -2895,6 +2895,244 @@
       font-size: 16px !important;
     }
   }
+/* 2026-09-25 unified layout and interaction refinement */
+.hero {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+.hero-visual {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  flex: none !important;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: #fff !important;
+}
+.hero-bg {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: none !important;
+  transition: none !important;
+}
+.hero-scroll-zone { height: 72px !important; min-height: 72px !important; }
+
+.msg-ghost,
+.save-message {
+  font-size: clamp(15px, min(4.25cqw, 2.4cqh), 19px) !important;
+  line-height: 2.12 !important;
+}
+
+.page > section:not(.hero) {
+  padding-top: 58px !important;
+  padding-bottom: 58px !important;
+}
+.invite-mark,
+.section-mark {
+  font-size: 22px !important;
+  line-height: 1 !important;
+  margin-bottom: 7px !important;
+}
+.invite-label,
+.section-label {
+  font-size: 20px !important;
+  line-height: 1.3 !important;
+  margin-bottom: 25px !important;
+}
+.invite-message,
+.rsvp-sub,
+.location-info p,
+.transport-item,
+.family,
+#countdown-text,
+.interview-card p {
+  font-size: 15.5px !important;
+  line-height: 1.9 !important;
+}
+.invite-message { margin: 0 0 21px !important; }
+
+button,
+.map-links a,
+.contact-icons a {
+  border-radius: 16px !important;
+}
+.rsvp-trigger,
+.rsvp-submit,
+.gb-primary-btn,
+.gb-submit-btn,
+.invite-contact-btn,
+.footer-btns button,
+.map-links a,
+.copy-btn {
+  background-color: rgba(28, 83, 190, 0.82) !important;
+}
+#rsvp-modal .rsvp-form label,
+#guestbook-write-modal .rsvp-like-form label,
+#rsvp-modal input,
+#guestbook-write-modal input,
+#guestbook-write-modal textarea,
+#rsvp-modal .segmented button,
+#rsvp-modal .radio-row label,
+#rsvp-modal .guest-stepper,
+#rsvp-modal .guest-stepper output {
+  font-size: 16px !important;
+}
+
+.interview-list { display: grid; gap: 12px; }
+.interview-card {
+  padding: 22px 20px;
+  border: 1px solid rgba(28,83,190,.18);
+  border-radius: 18px;
+  background: rgba(255,255,255,.38);
+}
+.interview-person {
+  color: var(--blue);
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.interview-question { font-weight: 700; margin: 0 0 7px; }
+.interview-answer { margin: 0; opacity: .82; }
+
+.share-section { text-align: center; }
+.share-section .footer-btns { margin-top: 4px; }
+.closing-scripture {
+  position: relative;
+  margin: 0 !important;
+  line-height: 0;
+  overflow: hidden;
+}
+.closing-scripture img { width: 100%; display: block; }
+.closing-scripture figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  color: rgba(255,255,255,.92);
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: .08em;
+  text-align: center;
+  text-shadow: 0 1px 8px rgba(0,0,0,.35);
+}
+.page { padding-bottom: 0 !important; }
+
+/* 2026-09-25 typography and rounded-control refinement */
+.invite-label,
+.section-label {
+  font-size: 17px !important;
+  line-height: 1.35 !important;
+  letter-spacing: .08em !important;
+}
+.invite-label.lang-en,
+.section-label.lang-en {
+  font-size: 19px !important;
+  letter-spacing: .16em !important;
+}
+.invite-message,
+.rsvp-sub,
+.location-info p,
+.transport-item,
+.family,
+#countdown-text,
+.interview-card p {
+  font-size: 14px !important;
+  line-height: 1.82 !important;
+}
+.interview-answer + .interview-answer { margin-top: 10px; }
+
+/* Keep modal headings prominent while reducing every supporting label/control. */
+#rsvp-modal .modal-title,
+#guestbook-write-modal .modal-title {
+  font-size: 21px !important;
+}
+#rsvp-modal .rsvp-form label,
+#guestbook-write-modal .rsvp-like-form label,
+#rsvp-modal .segmented button,
+#rsvp-modal .radio-row label,
+#rsvp-modal .guest-stepper,
+#rsvp-modal .guest-stepper output,
+#rsvp-modal .guest-stepper button,
+#rsvp-modal .rsvp-submit,
+#guestbook-write-modal .gb-submit-btn,
+#guestbook-write-modal .gb-char-count {
+  font-size: 14px !important;
+}
+/* Inputs stay at 16px to prevent automatic iPhone zoom, with tighter sizing around them. */
+#rsvp-modal input,
+#guestbook-write-modal input,
+#guestbook-write-modal textarea {
+  font-size: 16px !important;
+}
+
+:root { --control-radius: 20px; }
+button,
+.map-links a,
+.contact-icons a,
+.acc-accordion,
+.acc-head,
+.copy-btn,
+.rsvp-trigger,
+.invite-contact-btn,
+.gb-primary-btn,
+.gb-submit-btn,
+.rsvp-submit,
+.footer-btns button {
+  border-radius: var(--control-radius) !important;
+}
+#rsvp-modal .segmented,
+#rsvp-modal .radio-row,
+#rsvp-modal .guest-stepper {
+  border-radius: var(--control-radius) !important;
+  overflow: hidden !important;
+}
+#rsvp-modal .segmented button,
+#rsvp-modal .radio-row label,
+#rsvp-modal .guest-stepper button,
+#rsvp-modal .guest-stepper output {
+  border-radius: 0 !important;
+}
+#rsvp-modal .segmented button:first-child,
+#rsvp-modal .radio-row label:first-child,
+#rsvp-modal .guest-stepper button:first-child {
+  border-radius: var(--control-radius) 0 0 var(--control-radius) !important;
+}
+#rsvp-modal .segmented button:last-child,
+#rsvp-modal .radio-row label:last-child,
+#rsvp-modal .guest-stepper button:last-child {
+  border-radius: 0 var(--control-radius) var(--control-radius) 0 !important;
+}
+.share-section .footer-btns button,
+.share-section .footer-btns button * {
+  color: #fff !important;
+}
+
+/* Korean section headings stay more compact than the English headings. */
+.section-label:not(.lang-en) {
+  font-size: 16px !important;
+  letter-spacing: .035em !important;
+}
+
+.location .map-links a {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--blue) !important;
+  border: 1px solid rgba(28, 83, 190, .34) !important;
+}
+
+.share-section .footer-btns button,
+.share-section .footer-btns button * {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--blue) !important;
+  border-color: rgba(28, 83, 190, .34) !important;
+}
+
 </style>
 </head>
 <body class="intro-active">
@@ -2915,7 +3153,7 @@
     <div class="save-line"></div>
 
     <div class="save-message-wrap" id="msgWrap">
-      <div class="msg-ghost" id="msgGhost">아름답고 새로운 날,<br>서로에게 꼭 필요한 사람이 되어<br>평생을 함께하기로 약속합니다</div>
+      <div class="msg-ghost" id="msgGhost">새로운 계절을 맞이하는 날,<br>서로에게 꼭 필요한 사람이 되어<br>평생을 함께하기로 약속합니다</div>
       <div class="save-message" id="typedMessage"></div>
     </div>
 
@@ -2946,7 +3184,7 @@
   <!-- 2. 초대장 카드 -->
   <section class="invite">
     <div class="invite-mark">&#10039;</div>
-    <div class="invite-label">Invitation</div>
+    <div class="invite-label lang-en">Invitation</div>
     <p class="invite-message">
       아홉 번의 봄을 함께 지나,<br>
       하나님께서 허락하신 인연이<br>
@@ -2971,7 +3209,7 @@
   <!-- 4. 날짜 & 카운트다운 -->
   <section class="datecount">
     <div class="section-mark">&#10039;</div>
-    <div class="section-label">Calendar</div>
+    <div class="section-label lang-en">Calendar</div>
     <div class="calendar-card">
       <p class="calendar-date">2027년 2월 20일 토요일</p>
       <p class="calendar-time">19:00 PM</p>
@@ -3030,7 +3268,7 @@
     <!-- 5. 포토 갤러리 -->
   <section class="gallery">
     <div class="section-mark">&#10039;</div>
-    <div class="section-label">Gallery</div>
+    <div class="section-label lang-en">Gallery</div>
     <div class="gallery-stage">
       <button class="gallery-arrow prev" id="gallery-prev" type="button" aria-label="이전 갤러리 페이지">‹</button>
       <div class="gallery-track">
@@ -3072,6 +3310,28 @@
     <button class="gallery-lightbox-arrow next" id="gallery-lightbox-next" type="button" aria-label="다음 사진">›</button>
     <div class="gallery-lightbox-count" id="gallery-lightbox-count"></div>
   </div>
+
+<!-- 두 사람의 이야기 -->
+<!-- 두 사람의 이야기 -->
+<section class="interview">
+  <div class="section-mark">&#10039;</div>
+  <div class="section-label lang-en">Interview</div>
+  <div class="interview-list">
+    <article class="interview-card">
+      <p class="interview-question">Q1. 우리의 첫 만남, 사실은 어땠나요?</p>
+      <p class="interview-answer">중학교 2학년 어느 날, 청소당번이었던 신부가 힘겹게 쓰레기를 옮기고 있었습니다. 그때 신랑이 나타나 아무 말 없이 쓰레기를 가져가 들어주었습니다. 어쩌면 그때부터, 풋풋한 사랑이 시작되었던 것 같습니다.</p>
+    </article>
+    <article class="interview-card">
+      <p class="interview-question">Q2. 서로가 생각하는 ‘의외의’ 모습은?</p>
+      <p class="interview-answer">신랑은 생각보다 애교가 많습니다. 원하는 것이 있을 때면 잔망스러운 말투와 표정으로 신부의 마음을 사르르 녹입니다.</p>
+      <p class="interview-answer">신부는 생각보다 개그 욕심이 많습니다. 자신의 유머를 아무도 알아주지 않으면 은근히 섭섭해합니다.</p>
+    </article>
+    <article class="interview-card">
+      <p class="interview-question">Q3. 함께 꿈꾸는 미래는?</p>
+      <p class="interview-answer">떡두꺼비 같은 아이들과 함께 하나님 안에서 단란한 가정을 이루는 것이 꿈입니다.</p>
+    </article>
+  </div>
+</section>
 
 <!-- 8. 축의금 계좌 -->
   <section class="account">
@@ -3116,18 +3376,19 @@
     <button class="gb-primary-btn" type="button"
       onclick="openModal('guestbook-write-modal')">방명록 남기기</button>
   </section>
+<section class="share-section">
+  <div class="section-mark">&#10039;</div>
+  <div class="section-label">소중한 분들에게 전해주세요</div>
+  <div class="footer-btns">
+    <button onclick="shareKakao()">카카오톡 공유</button>
+    <button onclick="copyLink()">링크 복사</button>
+  </div>
+</section>
 
-  <figure class="closing-scripture">
-    <img src="closing-scripture.png" alt="우리가 사랑함은 그가 먼저 우리를 사랑하셨음이라 - 요한일서 4:19" draggable="false">
-  </figure>
-
-  <!-- 11. 푸터 -->
-  <footer>
-    <div class="footer-btns">
-      <button onclick="shareKakao()">카카오톡 공유</button>
-      <button onclick="copyLink()">링크 복사</button>
-    </div>
-  </footer>
+<figure class="closing-scripture">
+  <img src="closing-scripture.png" alt="우리가 사랑함은 그가 먼저 우리를 사랑하셨음이라 - 요한일서 4:19" draggable="false">
+  <figcaption>Thank you for coming</figcaption>
+</figure>
 
   <!-- 연락처 모달 -->
   <div class="modal-overlay" id="contact-modal-overlay" onclick="closeOnOverlay(event,'contact-modal')">
@@ -3245,11 +3506,6 @@
                     maxlength="200" required></textarea>
           <span class="gb-char-count" id="gb-count">0/200</span>
         </div>
-
-        <label for="gb-password">비밀번호</label>
-        <input type="password" id="gb-password" placeholder="숫자 4자리"
-               maxlength="4" inputmode="numeric" pattern="[0-9]{4}" required>
-        <div class="gb-helper">쪽지를 삭제할 때 필요해요</div>
 
         <button type="submit" class="gb-submit-btn">남기기</button>
       </form>
@@ -3642,6 +3898,24 @@ document.querySelectorAll('#rsvp-side button').forEach(b=>{
   });
 });
 
+function restartHeroHandwriting(){
+  const handwriting = document.querySelector('.hero-handwriting');
+  if(!handwriting) return;
+  const baseSrc = handwriting.dataset.src || 'hero-handwriting.gif';
+  handwriting.classList.remove('is-playing');
+  handwriting.removeAttribute('src');
+  void handwriting.offsetWidth;
+  handwriting.src = `${baseSrc}?play=${Date.now()}`;
+  handwriting.classList.add('is-playing');
+}
+
+document.addEventListener('visibilitychange', ()=>{
+  const intro = document.getElementById('introBackdrop');
+  if(document.visibilityState === 'visible' && intro && intro.style.display === 'none'){
+    restartHeroHandwriting();
+  }
+});
+
 // ---------- 시작 페이지(Save the Date) 열기 ----------
 function openTicket(){
   const backdrop = document.getElementById('introBackdrop');
@@ -3652,14 +3926,14 @@ function openTicket(){
   // 티켓 다음 화면은 사용자가 이전에 보던 위치가 아니라 항상 맨 위 Hero로 시작
   resetPageToTop();
   backdrop.classList.add('opening');
+  document.body.classList.remove('intro-active');
+  document.body.style.overflow = 'visible';
+  document.documentElement.style.overflowY = 'scroll';
+  ticketEl.blur();
   setTimeout(()=>{
     backdrop.style.display = 'none';
-    document.body.classList.remove('intro-active');
     resetPageToTop();
-    if(handwriting){
-      if(!handwriting.hasAttribute('src')) handwriting.src = handwriting.dataset.src;
-      handwriting.classList.add('is-playing');
-    }
+    if(handwriting) restartHeroHandwriting();
   }, 800);
 }
 const ticketEl = document.getElementById('ticketCard');
@@ -3669,7 +3943,7 @@ ticketEl.addEventListener('keydown', (e)=>{
 });
 
 // ---------- 중앙 문구 한 글자씩 부드럽게 타이핑되는 효과 (최종 위치에 고정한 채로 채워짐) ----------
-const typedText = "아름답고 새로운 날,\n서로에게 꼭 필요한 사람이 되어\n평생을 함께하기로 약속합니다";
+const typedText = "새로운 계절을 맞이하는 날,\n서로에게 꼭 필요한 사람이 되어\n평생을 함께하기로 약속합니다";
 function typeMessage(){
   const el = document.getElementById('typedMessage');
 
@@ -3965,23 +4239,20 @@ loadGuestbook();
 const gbForm = document.getElementById('gb-form');
 const gbAuthorInput = document.getElementById('gb-author');
 const gbContentInput = document.getElementById('gb-content');
-const gbPasswordInput = document.getElementById('gb-password');
 const gbCount = document.getElementById('gb-count');
 
 function guestbookFieldStates(){
   return {
     author: gbAuthorInput.value.trim().length > 0,
-    message: gbContentInput.value.trim().length > 0,
-    password: /^[0-9]{4}$/.test(gbPasswordInput.value.trim())
+    message: gbContentInput.value.trim().length > 0
   };
 }
 
 function updateGuestbookReadyState(){
   const states = guestbookFieldStates();
-  gbForm.classList.toggle('form-ready', states.author && states.message && states.password);
+  gbForm.classList.toggle('form-ready', states.author && states.message);
   if(states.author) setFormFieldError(gbForm, gbAuthorInput, false);
   if(states.message) setFormFieldError(gbForm, gbContentInput, false);
-  if(states.password) setFormFieldError(gbForm, gbPasswordInput, false);
 }
 
 function updateGuestbookCount(){
@@ -3992,7 +4263,6 @@ gbContentInput.addEventListener('input', ()=>{
   updateGuestbookCount();
   updateGuestbookReadyState();
 });
-gbPasswordInput.addEventListener('input', updateGuestbookReadyState);
 updateGuestbookCount();
 updateGuestbookReadyState();
 
@@ -4002,13 +4272,11 @@ gbForm.addEventListener('submit', async (e)=>{
   const submitBtn = gbForm.querySelector('.gb-submit-btn');
   const author = gbAuthorInput.value.trim();
   const message = gbContentInput.value.trim();
-  const password = gbPasswordInput.value.trim();
   const states = guestbookFieldStates();
 
-  if(!states.author || !states.message || !states.password){
+  if(!states.author || !states.message){
     setFormFieldError(gbForm, gbAuthorInput, !states.author);
     setFormFieldError(gbForm, gbContentInput, !states.message);
-    setFormFieldError(gbForm, gbPasswordInput, !states.password);
     return;
   }
 
