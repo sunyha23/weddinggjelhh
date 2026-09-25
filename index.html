@@ -2995,8 +2995,17 @@ button,
   font-weight: 700;
   margin-bottom: 10px;
 }
+.interview-card p {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
 .interview-question { font-weight: 700; margin: 0 0 7px; }
-.interview-answer { margin: 0; opacity: .82; }
+.interview-answer {
+  margin: 0;
+  opacity: .82;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
 
 .share-section { text-align: center; }
 .share-section .footer-btns { margin-top: 4px; }
@@ -3131,6 +3140,47 @@ button,
   background-color: transparent !important;
   color: var(--blue) !important;
   border-color: rgba(28, 83, 190, .34) !important;
+}
+
+/* 2026-09-25 ticket, headings, account copy and RSVP control refinement */
+.msg-ghost,
+.save-message {
+  line-height: 2.48 !important;
+}
+.save-message {
+  transform: translateY(calc(-50% + 8px)) !important;
+}
+
+.invite-label,
+.section-label {
+  font-size: 15px !important;
+}
+.invite-label.lang-en,
+.section-label.lang-en {
+  font-size: 18px !important;
+}
+
+.account .copy-btn {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--blue) !important;
+  border: 1px solid rgba(28, 83, 190, .34) !important;
+}
+
+/* Every RSVP choice is its own rounded rectangle. The guest counter stays joined. */
+#rsvp-modal .segmented,
+#rsvp-modal .radio-row {
+  gap: 8px !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+#rsvp-modal .segmented button,
+#rsvp-modal .radio-row label,
+#rsvp-modal .segmented button:first-child,
+#rsvp-modal .segmented button:last-child,
+#rsvp-modal .radio-row label:first-child,
+#rsvp-modal .radio-row label:last-child {
+  border-radius: var(--control-radius) !important;
 }
 
 </style>
