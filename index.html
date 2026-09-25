@@ -3430,8 +3430,8 @@ body {
   transform: none !important;
 }
 .save-yang-divider .save-bottom-img img {
-  width: clamp(108px, 29vw, 142px) !important;
-  max-width: 142px !important;
+  width: clamp(116px, 31vw, 154px) !important;
+  max-width: 154px !important;
 }
 .save-message-wrap {
   flex: 1 1 auto !important;
@@ -3450,33 +3450,67 @@ body {
   margin: 2px 0 14px !important;
   animation: none !important;
   opacity: 1 !important;
+  color: rgba(255,255,255,.88) !important;
+  text-shadow: -1px -1px 1px rgba(10, 29, 91, .68),
+               1px 1px 1px rgba(255,255,255,.24) !important;
 }
 .ticket-tear {
   transform: translateY(-7px) !important;
   margin-top: 0 !important;
   margin-bottom: 3px !important;
 }
-.save-info {
+.save-lower {
   flex: 0 0 auto;
-  width: max-content;
-  max-width: calc(100% - 48px);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   box-sizing: border-box;
-  margin-left: auto;
-  margin-right: auto;
-  transform: translateY(3px) !important;
-  padding: 12px 0 11px !important;
+  padding: 5px 12px 8px;
+  transform: translateY(3px);
+}
+.save-info {
+  flex: 1 1 auto;
+  position: relative;
+  left: 32px;
+  min-width: 0;
+  width: auto;
+  max-width: none;
+  box-sizing: border-box;
+  margin: 0;
+  transform: none !important;
+  padding: 5px 0 !important;
 }
 .save-info .info-row {
-  gap: 26px !important;
+  gap: 12px !important;
 }
 .save-info .info-row .label {
-  font-size: 19px !important;
+  flex-basis: 44px !important;
+  font-size: 17px !important;
 }
 .save-info .info-row .value {
-  font-size: 15px !important;
+  font-size: 13px !important;
 }
 .save-info .info-row {
   margin-bottom: 2px !important;
+}
+.save-qr {
+  flex: 0 0 auto;
+  width: clamp(108px, 28vw, 136px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.save-qr img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: translateY(-5px);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 </style>
@@ -3506,10 +3540,13 @@ body {
     <div class="save-screenshot-note">Save as a screenshot</div>
     <div class="ticket-tear" aria-hidden="true"></div>
 
-    <div class="save-info">
-      <div class="info-row"><span class="label">Date</span><span class="value">2027. 02. 20. Sat.</span></div>
-      <div class="info-row"><span class="label">Time</span><span class="value">19:00 PM</span></div>
-      <div class="info-row"><span class="label">Place</span><span class="value">더채플앳청담 채플홀 6F<br>서울특별시 강남구 논현동 94-9</span></div>
+    <div class="save-lower">
+      <div class="save-info">
+        <div class="info-row"><span class="label">Date</span><span class="value">2027. 02. 20. Sat.</span></div>
+        <div class="info-row"><span class="label">Time</span><span class="value">19:00 PM</span></div>
+        <div class="info-row"><span class="label">Place</span><span class="value">더채플앳청담 채플홀 6F<br>서울특별시 강남구 논현동 94-9</span></div>
+      </div>
+      <div class="save-qr"><img src="heartqr.png" alt="웨딩 안내 QR 코드" draggable="false"></div>
     </div>
   </div>
 </div>
