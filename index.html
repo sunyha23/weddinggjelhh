@@ -3651,6 +3651,21 @@ body {
   font-weight: 500 !important;
   line-height: 1 !important;
 }
+
+/* Center the interview action after matching RSVP styling. */
+.interview-trigger {
+  display: flex !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Required field markers in the RSVP form. */
+#rsvp-modal .required-mark {
+  display: inline-block;
+  margin-left: 3px;
+  color: var(--blue);
+  font: inherit;
+}
 </style>
 </head>
 <body class="intro-active">
@@ -3967,22 +3982,22 @@ body {
       <div class="modal-title">참석 여부 전달하기</div>
 
       <form class="rsvp-form" id="rsvp-form" novalidate>
-        <label>구분</label>
+        <label>구분<span class="required-mark" aria-hidden="true">*</span></label>
         <div class="segmented" id="rsvp-side">
           <button type="button" data-val="groom" class="active">신랑측</button>
           <button type="button" data-val="bride">신부측</button>
         </div>
 
-        <label>성함</label>
+        <label>성함<span class="required-mark" aria-hidden="true">*</span></label>
         <input type="text" id="rsvp-name" placeholder="성함을 입력해 주세요" required>
 
-        <label>참석 여부</label>
+        <label>참석 여부<span class="required-mark" aria-hidden="true">*</span></label>
         <div class="radio-row">
           <label><input type="radio" name="attendance" value="참석"> 참석</label>
           <label><input type="radio" name="attendance" value="불참석"> 불참석</label>
         </div>
 
-        <label>참석 인원</label>
+        <label>참석 인원<span class="required-mark" aria-hidden="true">*</span></label>
         <div class="guest-stepper" role="group" aria-label="참석 인원 조절">
           <button type="button" id="guest-minus" aria-label="참석 인원 줄이기">−</button>
           <output id="rsvp-guests-display" aria-live="polite">1명</output>
@@ -3993,7 +4008,7 @@ body {
         <label>동행인</label>
         <input type="text" id="rsvp-companion" placeholder="함께 오시는 분 성함">
 
-        <label>식사 여부</label>
+        <label>식사 여부<span class="required-mark" aria-hidden="true">*</span></label>
         <div class="radio-row">
           <label><input type="radio" name="meal" value="예정"> 예정</label>
           <label><input type="radio" name="meal" value="안함"> 안함</label>
@@ -4502,7 +4517,7 @@ function typeMessage(){
     charIndex++;
   });
   el.innerHTML = html;
-  setTimeout(openTicket, 3000);
+  setTimeout(openTicket, 3600);
 }
 typeMessage();
 
