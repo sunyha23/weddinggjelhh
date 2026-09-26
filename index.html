@@ -3513,6 +3513,144 @@ body {
   -webkit-user-drag: none;
 }
 
+
+
+/* 2026-09-26 content and interaction refinements */
+.save-top { transform: translateY(-30px) !important; }
+.save-yang-divider { transform: translateY(-18px) !important; }
+.save-message-wrap { transform: translateY(-38px) !important; }
+.save-qr img { transform: translateY(-12px) !important; }
+.ticket-couple-names {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: clamp(5px, 1.8vw, 10px);
+  white-space: nowrap;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: clamp(12px, 3.25vw, 16px) !important;
+  letter-spacing: .01em !important;
+}
+.ticket-couple-names strong { font-weight: 700; }
+.ticket-couple-names span { font-weight: 400; }
+.tchar { animation-duration: .16s !important; }
+.family { font-size: 14px !important; }
+.family b { font-size: 15.5px !important; }
+.family .family-role { font-size: 14px !important; }
+.account-intro,
+.interview-intro {
+  margin: 12px auto 22px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  letter-spacing: -.025em;
+  color: var(--text);
+  opacity: .82;
+  text-align: center;
+}
+.interview-trigger {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 188px;
+  padding: 12px 22px;
+  border: 1px solid rgba(38,91,216,.38);
+  border-radius: 18px;
+  background: transparent;
+  color: var(--blue);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+.interview-modal-sheet {
+  width: 100%;
+  height: 100svh;
+  max-height: 100svh;
+  padding-top: calc(22px + env(safe-area-inset-top, 0px)) !important;
+  border-radius: 0 !important;
+  background: var(--surface) !important;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#interview-modal-overlay {
+  align-items: stretch !important;
+  background: rgba(20,21,14,0.55) !important;
+}
+.interview-modal-sheet .modal-title {
+  font-family: 'Jost', 'Noto Sans KR', sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 500 !important;
+  margin-bottom: 16px !important;
+}
+.interview-modal-sheet .interview-list { gap: 10px; }
+.interview-modal-sheet .interview-card { padding: 16px 15px; }
+#rsvp-modal .modal-title,
+#guestbook-write-modal .modal-title { font-size: 16px !important; }
+
+
+
+
+/* 2026-09-26 family spacing and interview modal polish */
+.family .family-particle {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 14px;
+}
+.interview-trigger {
+  background: var(--blue) !important;
+  border-color: var(--blue) !important;
+  color: #fff !important;
+}
+.interview-modal-sheet {
+  background: #fff !important;
+}
+.interview-modal-sheet::before {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+}
+.interview-modal-sheet .modal-title,
+#rsvp-modal .modal-title,
+#guestbook-write-modal .modal-title {
+  font-family: 'Jost', 'Noto Sans KR', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+  color: var(--text) !important;
+  text-align: center !important;
+}
+
+/* Unify supporting copy across RSVP, interview, and account sections. */
+.rsvp-cta .rsvp-sub,
+.account-intro,
+.interview-intro {
+  font-family: 'Noto Sans KR', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.8 !important;
+  letter-spacing: -0.025em !important;
+  color: var(--text) !important;
+  opacity: 0.82 !important;
+  text-align: center !important;
+}
+
+/* Match the interview action to the RSVP action button. */
+.interview-trigger {
+  width: 196px !important;
+  height: var(--action-height) !important;
+  min-height: var(--action-height) !important;
+  padding: 0 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  border-radius: var(--control-radius) !important;
+  background-color: rgba(28, 83, 190, 0.82) !important;
+  color: #fff !important;
+  font-family: 'Jost', 'Noto Sans KR', sans-serif !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+}
 </style>
 </head>
 <body class="intro-active">
@@ -3537,7 +3675,7 @@ body {
       <div class="save-message" id="typedMessage"></div>
     </div>
 
-    <div class="save-screenshot-note">Save as a screenshot</div>
+    <div class="save-screenshot-note ticket-couple-names"><span>Limhanhuem <span class="ticket-name-amp">&amp;</span> Gojueun</span></div>
     <div class="ticket-tear" aria-hidden="true"></div>
 
     <div class="save-lower">
@@ -3575,7 +3713,7 @@ body {
     <div class="invite-label lang-en">Invitation</div>
     <p class="invite-message">
       아홉 번의 봄을 함께 지나,<br>
-      하나님께서 허락하신 인연이<br>
+      하나님께서 허락하신 만남이<br>
       삶에 가장 따뜻한 계절이 되었습니다.
     </p>
     <p class="invite-message">
@@ -3588,8 +3726,8 @@ body {
       그 다정한 사랑을 오래도록 마음에 간직하겠습니다.
     </p>
     <div class="family" id="familyNames">
-      <b>임성범</b> · <b>김승희</b>의<span class="family-role">차남</span><b class="family-name">임한흠</b><br>
-      <b>고양식</b> · <b>안정현</b>의<span class="family-role">장녀</span><b class="family-name">고주은</b>
+      <b>임성범</b> · <b>김승희</b><span class="family-particle">의</span><span class="family-role">차남</span><b class="family-name">임한흠</b><br>
+      <b>고양식</b> · <b>안정현</b><span class="family-particle">의</span><span class="family-role">장녀</span><b class="family-name">고주은</b>
     </div>
     <button class="invite-contact-btn" onclick="openModal('contact-modal')">축하 연락하기</button>
   </section>
@@ -3704,27 +3842,15 @@ body {
 <section class="interview">
   <div class="section-mark">&#10039;</div>
   <div class="section-label lang-en">Interview</div>
-  <div class="interview-list">
-    <article class="interview-card">
-      <p class="interview-question">Q1. 우리의 첫 만남, 사실은 어땠나요?</p>
-      <p class="interview-answer">중학교 2학년 어느 날, 청소당번이었던 신부가 힘겹게 쓰레기를 옮기고 있었습니다. 그때 신랑이 나타나 아무 말 없이 쓰레기를 가져가 들어주었습니다. 어쩌면 그때부터, 풋풋한 사랑이 시작되었던 것 같습니다.</p>
-    </article>
-    <article class="interview-card">
-      <p class="interview-question">Q2. 서로가 생각하는 ‘의외의’ 모습은?</p>
-      <p class="interview-answer">신랑은 생각보다 애교가 많습니다. 원하는 것이 있을 때면 잔망스러운 말투와 표정으로 신부의 마음을 사르르 녹입니다.</p>
-      <p class="interview-answer">신부는 생각보다 개그 욕심이 많습니다. 자신의 유머를 아무도 알아주지 않으면 은근히 섭섭해합니다.</p>
-    </article>
-    <article class="interview-card">
-      <p class="interview-question">Q3. 함께 꿈꾸는 미래는?</p>
-      <p class="interview-answer">떡두꺼비 같은 아이들과 함께 하나님 안에서 단란한 가정을 이루는 것이 꿈입니다.</p>
-    </article>
-  </div>
+  <p class="interview-intro">신랑 신부의 인터뷰를 준비했습니다.<br>인터뷰를 확인해보세요.</p>
+  <button class="interview-trigger" type="button" onclick="openModal('interview-modal')">인터뷰 읽어보기</button>
 </section>
 
 <!-- 8. 축의금 계좌 -->
   <section class="account">
     <div class="section-mark">&#10039;</div>
     <div class="section-label">마음 전하실 곳</div>
+    <p class="account-intro">소중한 축하를 보내주셔서 감사드리며,<br>따뜻한 마음에 깊이 감사드립니다.</p>
     <div class="acc-accordion" id="acc-groom">
       <div class="acc-head" onclick="toggleAcc('acc-groom')"><span>신랑측 계좌번호</span><span class="chev">⌄</span></div>
       <div class="acc-body">
@@ -3746,7 +3872,7 @@ body {
     <div class="section-mark">&#10039;</div>
     <div class="section-label">참석 여부</div>
     <p class="rsvp-sub">참석 여부를 알려주시면<br>준비에 큰 도움이 됩니다</p>
-    <button class="rsvp-trigger" onclick="openModal('rsvp-modal')">참석 의사 전달하기</button>
+    <button class="rsvp-trigger" onclick="openModal('rsvp-modal')">참석 여부 전달하기</button>
   </section>
 
   <!-- 10. 방명록 -->
@@ -3810,11 +3936,35 @@ body {
     </div>
   </div>
 
+
+  <!-- 인터뷰 모달 -->
+  <div class="modal-overlay" id="interview-modal-overlay" onclick="closeOnOverlay(event,'interview-modal')">
+    <div class="modal-sheet interview-modal-sheet" id="interview-modal">
+      <button class="modal-close" onclick="closeModal('interview-modal')">✕</button>
+      <div class="modal-title">Interview</div>
+      <div class="interview-list">
+        <article class="interview-card">
+          <p class="interview-question">Q1. 우리의 첫 만남, 사실은 어땠나요?</p>
+          <p class="interview-answer">중학교 2학년 어느 날, 청소당번이었던 신부가 힘겹게 쓰레기를 옮기고 있었습니다. 그때 신랑이 나타나 아무 말 없이 쓰레기를 가져가 들어주었습니다. 어쩌면 그때부터, 풋풋한 사랑이 시작되었던 것 같습니다.</p>
+        </article>
+        <article class="interview-card">
+          <p class="interview-question">Q2. 서로가 생각하는 ‘의외의’ 모습은?</p>
+          <p class="interview-answer">신랑은 생각보다 애교가 많습니다. 원하는 것이 있을 때면 잔망스러운 말투와 표정으로 신부의 마음을 사르르 녹입니다.</p>
+          <p class="interview-answer">신부는 생각보다 개그 욕심이 많습니다. 자신의 유머를 아무도 알아주지 않으면 은근히 섭섭해합니다.</p>
+        </article>
+        <article class="interview-card">
+          <p class="interview-question">Q3. 함께 꿈꾸는 미래는?</p>
+          <p class="interview-answer">떡두꺼비 같은 아이들과 함께 하나님 안에서 단란한 가정을 이루는 것이 꿈입니다.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+
   <!-- RSVP 모달 -->
   <div class="modal-overlay" id="rsvp-modal-overlay" onclick="closeOnOverlay(event,'rsvp-modal')">
     <div class="modal-sheet" id="rsvp-modal">
       <button class="modal-close" onclick="closeModal('rsvp-modal')">✕</button>
-      <div class="modal-title">참석 의사 전달하기</div>
+      <div class="modal-title">참석 여부 전달하기</div>
 
       <form class="rsvp-form" id="rsvp-form" novalidate>
         <label>구분</label>
@@ -3850,7 +4000,7 @@ body {
           <label><input type="radio" name="meal" value="미정"> 미정</label>
         </div>
 
-        <button type="submit" class="rsvp-submit">참석 의사 전달하기</button>
+        <button type="submit" class="rsvp-submit">참석 여부 전달하기</button>
       </form>
 
       <div class="rsvp-success" id="rsvp-success">
@@ -4114,25 +4264,33 @@ function closeGalleryLightbox(){
   requestAnimationFrame(() => window.scrollTo(0, gallerySavedScrollY));
 }
 
-function slideGalleryLightbox(step){
+async function slideGalleryLightbox(step){
   if(gallerySliding || !galleryLightbox.classList.contains('open')) return;
   gallerySliding = true;
+  const nextIndex = (galleryLightboxIndex + step + galleryItems.length) % galleryItems.length;
+  const sourceImage = galleryItems[nextIndex].querySelector('img');
+  const preload = new Image();
+  preload.src = sourceImage.src;
+  try { await preload.decode(); } catch (_) {
+    await new Promise(resolve => { preload.onload = preload.onerror = resolve; });
+  }
+  if(!galleryLightbox.classList.contains('open')) { gallerySliding = false; return; }
+
   const exitX = step > 0 ? '-110vw' : '110vw';
   const enterX = step > 0 ? '110vw' : '-110vw';
   galleryLightboxImage.style.transition = 'transform 0.24s cubic-bezier(.55,.06,.68,.19)';
-  requestAnimationFrame(() => {
-    galleryLightboxImage.style.transform = `translateX(${exitX})`;
-  });
+  requestAnimationFrame(() => { galleryLightboxImage.style.transform = `translateX(${exitX})`; });
 
   setTimeout(() => {
-    galleryLightboxIndex = (galleryLightboxIndex + step + galleryItems.length) % galleryItems.length;
-    const sourceImage = galleryItems[galleryLightboxIndex].querySelector('img');
-    galleryLightboxImage.src = sourceImage.src;
-    galleryLightboxImage.alt = sourceImage.alt;
-    galleryLightboxCount.textContent = `${galleryLightboxIndex + 1} / ${galleryItems.length}`;
+    galleryLightboxIndex = nextIndex;
+    galleryLightboxImage.style.visibility = 'hidden';
     galleryLightboxImage.style.transition = 'none';
     galleryLightboxImage.style.transform = `translateX(${enterX})`;
+    galleryLightboxImage.src = preload.src;
+    galleryLightboxImage.alt = sourceImage.alt;
+    galleryLightboxCount.textContent = `${galleryLightboxIndex + 1} / ${galleryItems.length}`;
     requestAnimationFrame(() => requestAnimationFrame(() => {
+      galleryLightboxImage.style.visibility = 'visible';
       galleryLightboxImage.style.transition = 'transform 0.32s cubic-bezier(.22,.75,.25,1)';
       galleryLightboxImage.style.transform = 'translateX(0)';
       setTimeout(() => { gallerySliding = false; }, 330);
@@ -4334,7 +4492,7 @@ ticketEl.addEventListener('keydown', (e)=>{
 const typedText = "새로운 계절을 맞이하는 날,\n서로에게 꼭 필요한 사람이 되어\n평생을 함께하기로 약속합니다";
 function typeMessage(){
   const el = document.getElementById('typedMessage');
-  const interval = 28;
+  const interval = 44;
   let html = '';
   let charIndex = 0;
   Array.from(typedText).forEach(ch => {
@@ -4344,7 +4502,7 @@ function typeMessage(){
     charIndex++;
   });
   el.innerHTML = html;
-  setTimeout(openTicket, 2400);
+  setTimeout(openTicket, 3000);
 }
 typeMessage();
 
