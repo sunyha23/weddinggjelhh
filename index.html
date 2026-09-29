@@ -3675,6 +3675,48 @@ body {
 .interview-modal-sheet .interview-list {
   margin-top: 10px !important;
 }
+
+/* Local preview: custom section title fonts. */
+@font-face {
+  font-family: 'DXTypeB';
+  src: url('DXTypeB.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'MyUnderwood';
+  src: url('MyUnderwood.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+.section-label:not(.lang-en) {
+  font-family: 'DXTypeB', 'Noto Sans KR', sans-serif !important;
+}
+.section-label.lang-en,
+.invite-label.lang-en {
+  font-family: 'MyUnderwood', 'Jost', sans-serif !important;
+}
+
+/* Local preview: closing photo above the contact button. */
+.invite .closing-scripture {
+  margin: 30px auto 24px !important;
+  width: 100%;
+}
+
+/* Local preview: custom calendar typography. */
+.calendar-date .cal-korean {
+  font-family: 'DXTypeB', 'Noto Sans KR', sans-serif !important;
+  font-weight: 400 !important;
+}
+.calendar-date .cal-number,
+.calendar-time,
+.datecount .cal-grid .dow,
+.datecount .cal-grid .day {
+  font-family: 'MyUnderwood', 'Jost', sans-serif !important;
+  font-weight: 400 !important;
+}
 </style>
 </head>
 <body class="intro-active">
@@ -3761,7 +3803,7 @@ body {
     <div class="section-mark">&#10039;</div>
     <div class="section-label lang-en">Calendar</div>
     <div class="calendar-card">
-      <p class="calendar-date">2027년 2월 20일 토요일</p>
+      <p class="calendar-date"><span class="cal-number">2027</span><span class="cal-korean">년</span> <span class="cal-number">2</span><span class="cal-korean">월</span> <span class="cal-number">20</span><span class="cal-korean">일 토요일</span></p>
       <p class="calendar-time">19:00 PM</p>
       <div class="calendar" id="calendar"></div>
     </div>
@@ -3923,10 +3965,10 @@ body {
   </div>
 </section>
 
+
 <figure class="closing-scripture">
-  <img src="closing-scripture.png" alt="우리가 사랑함은 그가 먼저 우리를 사랑하셨음이라 - 요한일서 4:19" draggable="false">
-  <figcaption>Thank you for coming</figcaption>
-</figure>
+          <img src="closing-scripture.png" alt="우리가 사랑함은 그가 먼저 우리를 사랑하셨음이라 - 요한일서 4:19" draggable="false">
+        </figure>
 
   <!-- 연락처 모달 -->
   <div class="modal-overlay" id="contact-modal-overlay" onclick="closeOnOverlay(event,'contact-modal')">
