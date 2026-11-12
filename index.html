@@ -4646,7 +4646,7 @@ function typeMessage(){
     charIndex++;
   });
   el.innerHTML = html;
-  setTimeout(openTicket, 3600);
+  setTimeout(openTicket, charIndex * interval + 350);
 }
 typeMessage();
 
