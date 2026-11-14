@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="임한흠 · 고주은 모바일 청첩장">
 <meta property="og:title" content="임한흠 · 고주은 결혼식에 초대합니다">
-<meta property="og:description" content="2027년 2월 20일 토요일 19:00 · 더채플앳청담 채플홀">
+<meta property="og:description" content="2027년 2월 20일 토요일 19:00&#10;더채플앳청담 채플홀">
 <meta property="og:url" content="https://sunyha23.github.io/weddinggjelhh/">
 <meta property="og:image" content="https://sunyha23.github.io/weddinggjelhh/thumbnail.jpg">
 <meta property="og:image:width" content="1200">
@@ -3846,6 +3846,7 @@ body {
 .gallery-item img{touch-action:pan-y !important}
 .gallery-track{will-change:transform}
 
+#introBackdrop:not(.intro-ready) .save-ticket{ visibility:hidden !important; }
 /* Local preview: closing photo above the contact button. */
 .invite .closing-scripture {
   margin: 30px auto 24px !important;
@@ -4844,6 +4845,30 @@ ticketEl.addEventListener('keydown', (e)=>{
   if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openTicket(); }
 });
 
+// 로딩·주소창 변화로 티켓 위치가 바뀌는 것을 막기 위해, 화면 크기와 폰트가 안정된 뒤에 티켓을 보여줌
+function introReadyGate(cb){
+  const bd = document.getElementById('introBackdrop');
+  let done = false, timer = null;
+  const finish = () => {
+    if(done) return;
+    done = true;
+    clearTimeout(timer);
+    fitTicket(); layoutScallops();
+    bd.classList.add('intro-ready');
+    cb();
+  };
+  const settle = () => { clearTimeout(timer); timer = setTimeout(finish, 160); };
+  window.addEventListener('resize', settle);
+  if(window.visualViewport) window.visualViewport.addEventListener('resize', settle);
+  const start = () => {
+    const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    fontsReady.then(() => requestAnimationFrame(() => requestAnimationFrame(settle)));
+  };
+  if(document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
+  setTimeout(finish, 1800); // 안전장치
+}
+
 // ---------- 중앙 초대 문구 타이핑 효과 ----------
 const typedText = "새로운 계절을 맞이하는 날,\n서로에게 꼭 필요한 사람이 되어\n평생을 함께하기로 약속합니다";
 function typeMessage(){
@@ -4858,7 +4883,7 @@ function typeMessage(){
     charIndex++;
   });
   el.innerHTML = html;
-  setTimeout(openTicket, 450);
+  introReadyGate(() => setTimeout(openTicket, 450));
 }
 typeMessage();
 
@@ -5330,7 +5355,7 @@ async function shareKakao(){
       objectType: 'feed',
       content: {
         title: '임한흠 · 고주은 결혼식에 초대합니다',
-        description: '2027년 2월 20일 토요일 19:00 · 더채플앳청담',
+        description: '2027년 2월 20일 토요일 19:00\n더채플앳청담 채플홀',
         imageUrl: 'https://sunyha23.github.io/weddinggjelhh/thumbnail.jpg',
         link: { mobileWebUrl: location.href, webUrl: location.href }
       },
