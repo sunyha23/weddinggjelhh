@@ -4488,6 +4488,7 @@ galleryNext?.addEventListener('click', () => showGalleryPage(galleryPage + 1));
     }
     if(locked === 'x'){
       moved = true;
+      try { if(!stage.hasPointerCapture(e.pointerId)) stage.setPointerCapture(e.pointerId); } catch(_) {}
       track.style.transition = 'none';
       track.style.transform = `translateX(${dx * 0.5}px)`;
     }
@@ -4499,14 +4500,15 @@ galleryNext?.addEventListener('click', () => showGalleryPage(galleryPage + 1));
     if(!moved){ return; }
     const W = stage.clientWidth || 360;
     if(Math.abs(dx) > 50){
-      const dir = dx < 0 ? 1 : -1;          // 왼쪽으로 밀면 다음 페이지
+      const dir = dx < 0 ? 1 : -1;           // 왼쪽으로 밀면 다음 페이지, 오른쪽으로 밀면 이전 페이지
+      const fs = -dir;                       // 손가락이 움직인 방향
       busy = true;
       track.style.transition = 'transform .16s ease-in';
-      track.style.transform = `translateX(${-dir * W * 0.6}px)`;
+      track.style.transform = `translateX(${fs * W * 0.6}px)`;
       setTimeout(() => {
         showGalleryPage(galleryPage + dir);
         track.style.transition = 'none';
-        track.style.transform = `translateX(${dir * W * 0.6}px)`;
+        track.style.transform = `translateX(${-fs * W * 0.6}px)`;
         requestAnimationFrame(() => requestAnimationFrame(() => {
           track.style.transition = 'transform .22s ease-out';
           track.style.transform = 'translateX(0)';
@@ -4520,6 +4522,10 @@ galleryNext?.addEventListener('click', () => showGalleryPage(galleryPage + 1));
   };
   stage.addEventListener('pointerup', end);
   stage.addEventListener('pointercancel', end);
+  // 영역 밖에서 손을 떼도 드래그가 끝나도록
+  window.addEventListener('pointerup', end);
+  window.addEventListener('pointercancel', end);
+  window.addEventListener('blur', () => { if(dragging) end({ clientX: sx }); });
   // 드래그 직후에는 사진 클릭(확대)이 열리지 않게
   stage.addEventListener('click', e => {
     if(moved){ e.stopPropagation(); e.preventDefault(); moved = false; }
@@ -4834,7 +4840,6 @@ function openTicket(){
   ticketEl.blur();
   setTimeout(()=>{
     backdrop.style.display = 'none';
-    resetPageToTop();
   }, torn ? 1900 : 800);
   // 조각이 떨어지기 시작하면 메인 손글씨 애니메이션도 함께 시작
   if(handwriting) setTimeout(restartHeroHandwriting, torn ? 500 : 0);
@@ -4883,7 +4888,7 @@ function typeMessage(){
     charIndex++;
   });
   el.innerHTML = html;
-  introReadyGate(() => setTimeout(openTicket, 450));
+  introReadyGate(() => setTimeout(openTicket, 550));
 }
 typeMessage();
 
