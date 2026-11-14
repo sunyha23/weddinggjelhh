@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>청첩장</title>
+<title>임한흠 · 고주은 결혼식에 초대합니다</title>
+<meta name="description" content="2027년 2월 20일 토요일 19:00 · 더채플앳청담 채플홀">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="임한흠 · 고주은 모바일 청첩장">
+<meta property="og:title" content="임한흠 · 고주은 결혼식에 초대합니다">
+<meta property="og:description" content="2027년 2월 20일 토요일 19:00 · 더채플앳청담 채플홀">
+<meta property="og:url" content="https://sunyha23.github.io/weddinggjelhh/">
+<meta property="og:image" content="https://sunyha23.github.io/weddinggjelhh/thumbnail.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sunyha23.github.io/weddinggjelhh/thumbnail.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -3830,6 +3841,11 @@ body {
 /* 인터뷰: 줄바꿈 없이 이어 쓰고 단어만 보존 */
 .interview-card .interview-answer{text-wrap:wrap !important; word-break:keep-all !important; overflow-wrap:break-word !important}
 
+/* 갤러리 드래그: 세로 스크롤은 유지, 가로 스와이프 허용 */
+.gallery-stage{touch-action:pan-y; user-select:none; -webkit-user-select:none}
+.gallery-item img{touch-action:pan-y !important}
+.gallery-track{will-change:transform}
+
 /* Local preview: closing photo above the contact button. */
 .invite .closing-scripture {
   margin: 30px auto 24px !important;
@@ -4450,6 +4466,64 @@ function showGalleryPage(page){
 
 galleryPrev?.addEventListener('click', () => showGalleryPage(galleryPage - 1));
 galleryNext?.addEventListener('click', () => showGalleryPage(galleryPage + 1));
+
+// 드래그/스와이프로 갤러리 페이지 넘기기 (터치·마우스 공통)
+(function(){
+  const stage = document.querySelector('.gallery-stage');
+  const track = document.querySelector('.gallery-track');
+  if(!stage || !track) return;
+  let sx = 0, sy = 0, dragging = false, moved = false, locked = false, busy = false;
+  stage.addEventListener('pointerdown', e => {
+    if(busy || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    if(e.target.closest('.gallery-arrow')) return;
+    sx = e.clientX; sy = e.clientY; dragging = true; moved = false; locked = false;
+  });
+  stage.addEventListener('pointermove', e => {
+    if(!dragging) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if(!locked && (Math.abs(dx) > 8 || Math.abs(dy) > 8)){
+      locked = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      if(locked === 'y'){ dragging = false; return; }
+    }
+    if(locked === 'x'){
+      moved = true;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(${dx * 0.5}px)`;
+    }
+  });
+  const end = e => {
+    if(!dragging) return;
+    dragging = false;
+    const dx = e.clientX - sx;
+    if(!moved){ return; }
+    const W = stage.clientWidth || 360;
+    if(Math.abs(dx) > 50){
+      const dir = dx < 0 ? 1 : -1;          // 왼쪽으로 밀면 다음 페이지
+      busy = true;
+      track.style.transition = 'transform .16s ease-in';
+      track.style.transform = `translateX(${-dir * W * 0.6}px)`;
+      setTimeout(() => {
+        showGalleryPage(galleryPage + dir);
+        track.style.transition = 'none';
+        track.style.transform = `translateX(${dir * W * 0.6}px)`;
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          track.style.transition = 'transform .22s ease-out';
+          track.style.transform = 'translateX(0)';
+          setTimeout(() => { busy = false; }, 230);
+        }));
+      }, 160);
+    } else {
+      track.style.transition = 'transform .2s ease-out';
+      track.style.transform = 'translateX(0)';
+    }
+  };
+  stage.addEventListener('pointerup', end);
+  stage.addEventListener('pointercancel', end);
+  // 드래그 직후에는 사진 클릭(확대)이 열리지 않게
+  stage.addEventListener('click', e => {
+    if(moved){ e.stopPropagation(); e.preventDefault(); moved = false; }
+  }, true);
+})();
 
 function showGalleryLightbox(index){
   if(!galleryLightbox.classList.contains('open')){
@@ -5257,7 +5331,7 @@ async function shareKakao(){
       content: {
         title: '임한흠 · 고주은 결혼식에 초대합니다',
         description: '2027년 2월 20일 토요일 19:00 · 더채플앳청담',
-        imageUrl: 'https://sunyha23.github.io/weddinggjelhh/gallery-1.jpg',
+        imageUrl: 'https://sunyha23.github.io/weddinggjelhh/thumbnail.jpg',
         link: { mobileWebUrl: location.href, webUrl: location.href }
       },
       buttons: [{
