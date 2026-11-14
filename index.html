@@ -3848,6 +3848,25 @@ body {
 .gallery-track{will-change:transform}
 
 #introBackdrop:not(.intro-ready) .save-ticket{ visibility:hidden !important; }
+/* 티켓 상단도 하단 정보처럼 형압(눌러 찍은) 인쇄 느낌 */
+#introBackdrop .save-ticket .sn{
+  color:rgba(255,255,255,.94) !important;
+  text-shadow:-1px -1px 1px rgba(10,29,91,.62), 1px 1px 1px rgba(255,255,255,.16) !important;
+}
+#introBackdrop .save-ticket .save-top img{
+  filter:url(#inkRough) drop-shadow(-1px -1px .7px rgba(10,29,91,.7)) drop-shadow(1px 1px .7px rgba(255,255,255,.18)) !important;
+}
+#introBackdrop .save-ticket .save-yang-divider .save-bottom-img img{
+  filter:url(#inkRough) drop-shadow(-1px -1px .7px rgba(10,29,91,.7)) drop-shadow(1px 1px .7px rgba(255,255,255,.18)) !important;
+}
+#introBackdrop .save-ticket .save-yang-divider .save-line{
+  background:rgba(255,255,255,.8) !important;
+  box-shadow:0 -1px 0 rgba(10,29,91,.55), 0 1px 0 rgba(255,255,255,.18) !important;
+}
+#introBackdrop .save-ticket .save-dots i{
+  box-shadow:-1px -1px 1px rgba(10,29,91,.6), 1px 1px 1px rgba(255,255,255,.16) !important;
+}
+
 /* Local preview: closing photo above the contact button. */
 .invite .closing-scripture {
   margin: 30px auto 24px !important;
