@@ -3915,6 +3915,31 @@ section.invite{ padding-top:92px; }
 /* 창(모달·갤러리 확대)이 열려 있으면 소리 버튼 숨김 */
 body.bgm-hide #bgmToggle{ opacity:0 !important; pointer-events:none !important; }
 
+/* 폴라로이드: 전부 가운데 정렬, 기울기는 아주 살짝, 좁은 두 장은 더 크게 */
+.invite-polaroids .pol-left,
+.invite-polaroids .pol-right,
+.invite-polaroids .pol-wide{ align-self:center; margin-left:0; margin-right:0; }
+.invite-polaroids .pol-left{  width:50%; margin-top:0; transform:translateY(28px) rotate(-1.5deg); }
+.invite-polaroids .pol-right{ width:50%; margin-top:22px; transform:translateY(28px) rotate(1.2deg); }
+.invite-polaroids .pol-wide{  width:50%; margin-top:22px; transform:translateY(28px) rotate(-0.8deg);
+  filter:drop-shadow(0 8px 16px rgba(31,58,117,.16)) drop-shadow(0 1px 3px rgba(31,58,117,.12)); }
+.invite-polaroids.in-view .pol-left{  transform:translateY(0) rotate(-1.5deg); }
+.invite-polaroids.in-view .pol-right{ transform:translateY(0) rotate(1.2deg); }
+.invite-polaroids.in-view .pol-wide{  transform:translateY(0) rotate(-0.8deg); }
+
+/* 와이드 프레임 3장: 왼 → 오른 → 왼 지그재그, 화면 안에 전부 들어오게(잘리지 않음) */
+.invite-polaroids{ padding:0; margin-top:79px; margin-left:-28px; margin-right:-28px; overflow-x:clip; }
+.invite-polaroids .pol-left,
+.invite-polaroids .pol-right,
+.invite-polaroids .pol-wide{ width:54%; align-self:flex-start; margin-right:0;
+  filter:drop-shadow(0 8px 16px rgba(31,58,117,.16)) drop-shadow(0 1px 3px rgba(31,58,117,.12)); }
+.invite-polaroids .pol-left{  margin-left:10%; margin-top:0;     transform:translateY(28px) rotate(-5deg); }
+.invite-polaroids .pol-right{ margin-left:36%;  margin-top:-14px; transform:translateY(28px) rotate(4deg); }
+.invite-polaroids .pol-wide{  margin-left:9%; margin-top:-14px; transform:translateY(28px) rotate(-3deg); }
+.invite-polaroids.in-view .pol-left{  transform:translateY(0) rotate(-5deg); }
+.invite-polaroids.in-view .pol-right{ transform:translateY(0) rotate(4deg); }
+.invite-polaroids.in-view .pol-wide{  transform:translateY(0) rotate(-3deg); }
+
 /* Local preview: closing photo above the contact button. */
 .invite .closing-scripture {
   margin: 30px auto 24px !important;
@@ -4016,9 +4041,9 @@ body.bgm-hide #bgmToggle{ opacity:0 !important; pointer-events:none !important; 
       <b>고양식</b> · <b>안정현</b><span class="family-particle">의</span><span class="family-role">장녀</span><b class="family-name">고주은</b>
     </div>
     <div class="invite-polaroids" id="invitePolaroids">
-      <img class="pol pol-left" src="polaroid-left.webp" alt="바닷가에서 마주 보는 두 사람" loading="lazy" decoding="async" draggable="false">
-      <img class="pol pol-right" src="polaroid-right.webp" alt="바닷가에서 신부를 바라보는 신랑" loading="lazy" decoding="async" draggable="false">
-      <img class="pol pol-wide" src="polaroid-wide.webp" alt="바닷가에서 나란히 선 두 사람" loading="lazy" decoding="async" draggable="false">
+      <img class="pol pol-left" src="polaroid-w1.webp" alt="바닷가에서 마주 보는 두 사람" loading="lazy" decoding="async" draggable="false">
+      <img class="pol pol-right" src="polaroid-w2.webp" alt="바닷가에서 신부를 바라보는 신랑" loading="lazy" decoding="async" draggable="false">
+      <img class="pol pol-wide" src="polaroid-w3.webp" alt="바닷가에서 나란히 선 두 사람" loading="lazy" decoding="async" draggable="false">
     </div>
     <button class="invite-contact-btn invite-contact-after" onclick="openModal('contact-modal')">축하 연락하기</button>
   </section>
@@ -4916,9 +4941,11 @@ function playTearAway(backdrop){
 function openTicket(){
   const backdrop = document.getElementById('introBackdrop');
   if(backdrop.classList.contains('opening')) return;
+  // 뜯는 소리를 가장 먼저(무거운 화면 처리 전에) 시작해서 터치/자동 모두 지연 없이 재생
+  const reduceMo = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduceMo && window.playTearSound) window.playTearSound();
   if(window.bgmStart) window.bgmStart();   // 배경음악 시작(터치로 열었다면 바로 재생)
   const torn = playTearAway(backdrop);
-  if(torn && window.playTearSound) window.playTearSound();   // 종이 뜯기는 소리
   if(torn) backdrop.style.transitionDelay = '0.4s';
 
   const handwriting = document.querySelector('.hero-handwriting');
@@ -5553,7 +5580,7 @@ function copyLink(){
 // ---------- 티켓 뜯어지는 효과음 ----------
 (function(){
   let snd;
-  try { snd = new Audio('tear.mp3'); snd.preload = 'auto'; snd.volume = 0.6; } catch(_) { return; }
+  try { snd = new Audio('tear.mp3?v=3'); snd.preload = 'auto'; snd.volume = 0.3; snd.load(); } catch(_) { return; }
   window.playTearSound = function(){
     // 터치로 열든 자동으로 열리든 재생 시도 (자동일 땐 브라우저 정책에 따라 막힐 수 있음)
     try {
