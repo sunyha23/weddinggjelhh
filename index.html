@@ -5378,7 +5378,18 @@ async function shareKakao(){
   try {
     const Kakao = await loadKakaoSdk();
     if(!Kakao.isInitialized()) Kakao.init(KAKAO_MAP_APP_KEY);
-    Kakao.Share.sendScrap({ requestUrl: SHARE_URL });
+    // sendScrap은 도메인/스크랩 설정에 민감해 '요청 실패'가 나기 쉬워서, 링크 미리보기와 같은 구성의 카드로 직접 전송
+    Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '2027년 2월 20일 토요일 19:00',
+        description: '더채플앳청담 채플홀 6F',
+        imageUrl: 'https://jueunhanheum.site/thumbnail.jpg',
+        imageWidth: 1200,
+        imageHeight: 630,
+        link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL }
+      }
+    });
     return;
   } catch(err) {
     console.error('카카오톡 공유 오류:', err);
