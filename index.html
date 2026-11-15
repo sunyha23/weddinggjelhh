@@ -3888,6 +3888,33 @@ body {
 #bgmToggle.playing .bgm-slash{ opacity:0; }
 #bgmToggle .bgm-slash{ transition:opacity .2s; }
 
+/* 초대장 아래 폴라로이드 3장 */
+.invite-polaroids{ display:flex; flex-direction:column; margin:-6px 0 0; padding:0 4px; }
+.invite-contact-after{ margin-top:52px; }
+.invite-polaroids .pol{
+  display:block; height:auto; user-select:none; -webkit-user-drag:none; pointer-events:none;
+  filter:drop-shadow(0 8px 16px rgba(31,58,117,.16)) drop-shadow(0 1px 3px rgba(31,58,117,.12));
+  opacity:0; transition:opacity .9s ease, transform 1s cubic-bezier(.2,.7,.2,1);
+  will-change:transform,opacity;
+}
+.invite-polaroids .pol-left{  width:44%; align-self:flex-start; margin-left:8%;  transform:translateY(28px) rotate(-6deg); }
+.invite-polaroids .pol-right{ width:44%; align-self:flex-end;   margin-right:8%; margin-top:-34px; transform:translateY(28px) rotate(5deg); transition-delay:.12s; }
+.invite-polaroids .pol-wide{  width:72%; align-self:center; margin-left:0; margin-top:34px;
+  filter:drop-shadow(0 1.5px 0 rgba(31,40,80,.42)) drop-shadow(0 9px 14px rgba(31,58,117,.22)) drop-shadow(0 1px 3px rgba(31,58,117,.14)); transform:translateY(28px) rotate(-2deg); transition-delay:.2s; }
+.invite-polaroids.in-view .pol{ opacity:1; }
+.invite-polaroids.in-view .pol-left{  transform:translateY(0) rotate(-4deg); }
+.invite-polaroids.in-view .pol-right{ transform:translateY(0) rotate(3.5deg); }
+.invite-polaroids.in-view .pol-wide{  transform:translateY(0) rotate(1deg); }
+@media (prefers-reduced-motion: reduce){ .invite-polaroids .pol{ transition:none; } }
+
+/* 인비테이션: 본문 위아래 여백 확대 */
+section.invite{ padding-top:92px; }
+.invite .invite-label{ margin-bottom:48px !important; }
+.invite .family{ margin-top:70px !important; }
+
+/* 창(모달·갤러리 확대)이 열려 있으면 소리 버튼 숨김 */
+body.bgm-hide #bgmToggle{ opacity:0 !important; pointer-events:none !important; }
+
 /* Local preview: closing photo above the contact button. */
 .invite .closing-scripture {
   margin: 30px auto 24px !important;
@@ -3988,7 +4015,12 @@ body {
       <b>임성범</b> · <b>김승희</b><span class="family-particle">의</span><span class="family-role">차남</span><b class="family-name">임한흠</b><br>
       <b>고양식</b> · <b>안정현</b><span class="family-particle">의</span><span class="family-role">장녀</span><b class="family-name">고주은</b>
     </div>
-    <button class="invite-contact-btn" onclick="openModal('contact-modal')">축하 연락하기</button>
+    <div class="invite-polaroids" id="invitePolaroids">
+      <img class="pol pol-left" src="polaroid-left.webp" alt="바닷가에서 마주 보는 두 사람" loading="lazy" decoding="async" draggable="false">
+      <img class="pol pol-right" src="polaroid-right.webp" alt="바닷가에서 신부를 바라보는 신랑" loading="lazy" decoding="async" draggable="false">
+      <img class="pol pol-wide" src="polaroid-wide.webp" alt="바닷가에서 나란히 선 두 사람" loading="lazy" decoding="async" draggable="false">
+    </div>
+    <button class="invite-contact-btn invite-contact-after" onclick="openModal('contact-modal')">축하 연락하기</button>
   </section>
 
   <!-- 4. 날짜 & 카운트다운 -->
@@ -4516,17 +4548,23 @@ galleryNext?.addEventListener('click', () => showGalleryPage(galleryPage + 1));
   const stage = document.querySelector('.gallery-stage');
   const track = document.querySelector('.gallery-track');
   if(!stage || !track) return;
-  let sx = 0, sy = 0, dragging = false, moved = false, locked = false, busy = false;
+  let sx = 0, sy = 0, lastX = 0, dragging = false, moved = false, locked = false, busy = false;
+  let samples = [];
   const area = stage.closest('.gallery') || stage;
   area.addEventListener('pointerdown', e => {
     if(busy || (e.pointerType === 'mouse' && e.button !== 0)) return;
-    sx = e.clientX; sy = e.clientY; dragging = true; moved = false; locked = false;
+    sx = e.clientX; sy = e.clientY; lastX = sx; dragging = true; moved = false; locked = false;
+    samples = [{ x: sx, t: performance.now() }];
   });
   window.addEventListener('pointermove', e => {
     if(!dragging) return;
     const dx = e.clientX - sx, dy = e.clientY - sy;
+    lastX = e.clientX;
+    samples.push({ x: e.clientX, t: performance.now() });
+    if(samples.length > 8) samples.shift();
     if(!locked && (Math.abs(dx) > 8 || Math.abs(dy) > 8)){
-      locked = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      // 엄지로 비스듬히 밀어도 가로 스와이프로 인식 (세로로 확실할 때만 스크롤)
+      locked = Math.abs(dx) > Math.abs(dy) * 0.7 ? 'x' : 'y';
       if(locked === 'y'){ dragging = false; return; }
     }
     if(locked === 'x'){
@@ -4539,10 +4577,19 @@ galleryNext?.addEventListener('click', () => showGalleryPage(galleryPage + 1));
   const end = e => {
     if(!dragging) return;
     dragging = false;
-    const dx = e.clientX - sx;
+    // pointercancel 등은 clientX가 0으로 오는 경우가 있어서 마지막 이동 좌표를 사용
+    const x = (e.type === 'pointerup' && e.clientX) ? e.clientX : lastX;
+    const dx = x - sx;
     if(!moved){ return; }
     const W = stage.clientWidth || 360;
-    if(Math.abs(dx) > 50){
+    // 빠르게 툭 치는(플릭) 동작도 인식
+    let fast = false;
+    if(samples.length > 1){
+      const a = samples[0], b = samples[samples.length - 1];
+      const dt = Math.max(1, b.t - a.t);
+      fast = Math.abs(b.x - a.x) / dt > 0.25 && Math.abs(dx) > 26;
+    }
+    if(Math.abs(dx) > 44 || fast){
       const dir = dx < 0 ? 1 : -1;           // 왼쪽으로 밀면 다음 페이지, 오른쪽으로 밀면 이전 페이지
       const fs = -dir;                       // 손가락이 움직인 방향
       busy = true;
@@ -4871,6 +4918,7 @@ function openTicket(){
   if(backdrop.classList.contains('opening')) return;
   if(window.bgmStart) window.bgmStart();   // 배경음악 시작(터치로 열었다면 바로 재생)
   const torn = playTearAway(backdrop);
+  if(torn && window.playTearSound) window.playTearSound();   // 종이 뜯기는 소리
   if(torn) backdrop.style.transitionDelay = '0.4s';
 
   const handwriting = document.querySelector('.hero-handwriting');
@@ -5499,6 +5547,42 @@ function copyLink(){
     if(document.hidden){ if(!audio.paused) audio.pause(); }
     else if(wanted && !userOff){ audio.play().then(() => ui(true)).catch(()=>{}); }
   });
+})();
+</script>
+<script>
+// ---------- 티켓 뜯어지는 효과음 ----------
+(function(){
+  let snd;
+  try { snd = new Audio('tear.mp3'); snd.preload = 'auto'; snd.volume = 0.6; } catch(_) { return; }
+  window.playTearSound = function(){
+    // 터치로 열든 자동으로 열리든 재생 시도 (자동일 땐 브라우저 정책에 따라 막힐 수 있음)
+    try {
+      snd.currentTime = 0;
+      const r = snd.play();
+      if(r && r.catch) r.catch(() => {});
+    } catch(_) {}
+  };
+})();
+</script>
+<script>
+// 폴라로이드: 화면에 들어오면 떠오르듯 나타남
+(function(){
+  const box = document.getElementById('invitePolaroids');
+  if(!box) return;
+  if(!('IntersectionObserver' in window)){ box.classList.add('in-view'); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if(e.isIntersecting){ box.classList.add('in-view'); io.disconnect(); }
+  }), { threshold: 0.12 });
+  io.observe(box);
+})();
+</script>
+<script>
+// 모달/갤러리 확대 창이 열리면 소리 버튼 숨김
+(function(){
+  const sel = '.modal-overlay.open, .gallery-lightbox.open';
+  const upd = () => document.body.classList.toggle('bgm-hide', !!document.querySelector(sel));
+  new MutationObserver(upd).observe(document.body, { subtree:true, attributes:true, attributeFilter:['class'] });
+  upd();
 })();
 </script>
 </body>
