@@ -10,11 +10,11 @@
 <meta property="og:title" content="2027년 2월 20일 토요일 19:00">
 <meta property="og:description" content="더채플앳청담 채플홀 6F">
 <meta property="og:url" content="https://jueunhanheum.site/">
-<meta property="og:image" content="https://jueunhanheum.site/thumbnail.jpg">
+<meta property="og:image" content="https://jueunhanheum.site/thumbnail2.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://jueunhanheum.site/thumbnail.jpg">
+<meta name="twitter:image" content="https://jueunhanheum.site/thumbnail2.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -3867,6 +3867,27 @@ body {
   box-shadow:-1px -1px 1px rgba(10,29,91,.6), 1px 1px 1px rgba(255,255,255,.16) !important;
 }
 
+/* 배경음악 버튼 */
+#bgmToggle{
+  position:fixed; z-index:900;
+  top:calc(env(safe-area-inset-top,0px) + 16px);
+  right:max(20px, calc(50% - 240px + 20px));
+  width:38px; height:38px; border-radius:50%;
+  border:1.5px solid var(--blue);
+  background:rgba(255,255,255,.72); color:var(--blue);
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center;
+  padding:0; cursor:pointer; -webkit-tap-highlight-color:transparent;
+  opacity:0; pointer-events:none; transition:opacity .5s ease;
+}
+#bgmToggle.show{ opacity:1; pointer-events:auto; }
+#bgmToggle svg{ width:18px; height:18px; display:block; }
+#bgmToggle .bgm-wave{ opacity:1; transition:opacity .2s; }
+#bgmToggle:not(.playing) .bgm-wave{ opacity:0; }
+#bgmToggle:not(.playing) .bgm-slash{ opacity:1; }
+#bgmToggle.playing .bgm-slash{ opacity:0; }
+#bgmToggle .bgm-slash{ transition:opacity .2s; }
+
 /* Local preview: closing photo above the contact button. */
 .invite .closing-scripture {
   margin: 30px auto 24px !important;
@@ -4012,6 +4033,8 @@ body {
       <div class="gallery-item"><img src="gallery-21.jpg" alt="웨딩 사진 21" loading="lazy" decoding="async" draggable="false"></div>
       <div class="gallery-item"><img src="gallery-22.jpg" alt="웨딩 사진 22" loading="lazy" decoding="async" draggable="false"></div>
       <div class="gallery-item"><img src="gallery-23.jpg" alt="웨딩 사진 23" loading="lazy" decoding="async" draggable="false"></div>
+      <div class="gallery-item"><img src="gallery-24.jpg" alt="웨딩 사진 24" loading="lazy" decoding="async" draggable="false"></div>
+      <div class="gallery-item"><img src="gallery-25.jpg" alt="웨딩 사진 25" loading="lazy" decoding="async" draggable="false"></div>
 
 
       </div>
@@ -4846,6 +4869,7 @@ function playTearAway(backdrop){
 function openTicket(){
   const backdrop = document.getElementById('introBackdrop');
   if(backdrop.classList.contains('opening')) return;
+  if(window.bgmStart) window.bgmStart();   // 배경음악 시작(터치로 열었다면 바로 재생)
   const torn = playTearAway(backdrop);
   if(torn) backdrop.style.transitionDelay = '0.4s';
 
@@ -5374,17 +5398,16 @@ function loadKakaoSdk(){
 }
 const SHARE_URL = 'https://jueunhanheum.site/';
 async function shareKakao(){
-  // 1) 카카오톡 채팅(친구) 선택창이 열리고, 링크 미리보기(썸네일·날짜·장소)가 그대로 전송됨
+  // 1) 카카오톡 채팅(친구) 선택창 → 링크 미리보기 카드 전송 (웹 도메인 등록 필요)
   try {
     const Kakao = await loadKakaoSdk();
     if(!Kakao.isInitialized()) Kakao.init(KAKAO_MAP_APP_KEY);
-    // sendScrap은 도메인/스크랩 설정에 민감해 '요청 실패'가 나기 쉬워서, 링크 미리보기와 같은 구성의 카드로 직접 전송
     Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
         title: '2027년 2월 20일 토요일 19:00',
         description: '더채플앳청담 채플홀 6F',
-        imageUrl: 'https://jueunhanheum.site/thumbnail.jpg',
+        imageUrl: 'https://jueunhanheum.site/thumbnail2.jpg',
         imageWidth: 1200,
         imageHeight: 630,
         link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL }
@@ -5409,6 +5432,74 @@ async function shareKakao(){
 function copyLink(){
   navigator.clipboard.writeText(SHARE_URL).then(()=> showToast('링크가 복사되었습니다'));
 }
+</script>
+<audio id="bgmAudio" src="bgm.mp3" preload="none" loop></audio>
+<button id="bgmToggle" type="button" aria-label="배경음악 켜기/끄기" aria-pressed="false">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" stroke="none"/>
+    <path class="bgm-wave" d="M15.5 9a4.2 4.2 0 0 1 0 6"/>
+    <path class="bgm-wave" d="M18.2 6.5a8 8 0 0 1 0 11"/>
+    <path class="bgm-slash" d="M16 9.5l5 5M21 9.5l-5 5"/>
+  </svg>
+</button>
+<script>
+// ---------- 배경음악 ----------
+(function(){
+  const audio = document.getElementById('bgmAudio');
+  const btn = document.getElementById('bgmToggle');
+  if(!audio || !btn) return;
+  const TARGET = 0.65;
+  let wanted = false;        // 재생하려는 상태 (사용자가 끄면 false)
+  let userOff = false;       // 사용자가 직접 끈 경우
+  let fadeTimer = 0;
+  function ui(on){ btn.classList.toggle('playing', on); btn.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  function fadeTo(v, ms, done){
+    clearInterval(fadeTimer);
+    const from = audio.volume, t0 = performance.now();
+    fadeTimer = setInterval(() => {
+      const k = Math.min(1, (performance.now() - t0) / ms);
+      audio.volume = Math.max(0, Math.min(1, from + (v - from) * k));
+      if(k >= 1){ clearInterval(fadeTimer); if(done) done(); }
+    }, 40);
+  }
+  async function play(){
+    if(userOff) return false;
+    wanted = true;
+    try {
+      audio.volume = 0;
+      await audio.play();
+      ui(true);
+      fadeTo(TARGET, 1500);
+      return true;
+    } catch(_) { ui(false); return false; }
+  }
+  function pause(){
+    wanted = false;
+    fadeTo(0, 300, () => audio.pause());
+    ui(false);
+  }
+  // 첫 화면의 터치/클릭(브라우저 정책상 사용자 동작이 있어야 소리 재생 가능)
+  window.bgmStart = function(){
+    btn.classList.add('show');
+    play().then(ok => {
+      if(ok) return;
+      const once = () => {
+        ['pointerdown','touchend','click','keydown'].forEach(t => document.removeEventListener(t, once, true));
+        play();
+      };
+      ['pointerdown','touchend','click','keydown'].forEach(t => document.addEventListener(t, once, true));
+    });
+  };
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    if(audio.paused){ userOff = false; play(); }
+    else { userOff = true; pause(); }
+  });
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden){ if(!audio.paused) audio.pause(); }
+    else if(wanted && !userOff){ audio.play().then(() => ui(true)).catch(()=>{}); }
+  });
+})();
 </script>
 </body>
 </html>
