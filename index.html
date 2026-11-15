@@ -3940,6 +3940,17 @@ body.bgm-hide #bgmToggle{ opacity:0 !important; pointer-events:none !important; 
 .invite-polaroids.in-view .pol-right{ transform:translateY(0) rotate(4deg); }
 .invite-polaroids.in-view .pol-wide{  transform:translateY(0) rotate(-3deg); }
 
+/* 갤러리/확대 보기: 넘길 때 화면이 위아래로 흔들리지 않게 + 페이지 번호는 사진 밖에 */
+.gallery-lightbox{ overscroll-behavior:none; touch-action:none; }
+.gallery-lightbox img{
+  max-height:calc(100vh - 210px) !important;
+  max-height:calc(100dvh - 210px) !important;
+}
+.gallery-lightbox-count{
+  bottom:max(40px, calc(env(safe-area-inset-bottom) + 26px)) !important;
+}
+body.gal-dragging{ overflow:hidden !important; overscroll-behavior:none; }
+.gallery-stage.gal-x, .gallery.gal-x{ touch-action:none !important; }
 /* Local preview: closing photo above the contact button. */
 .invite .closing-scripture {
   margin: 30px auto 24px !important;
@@ -4191,7 +4202,7 @@ body.bgm-hide #bgmToggle{ opacity:0 !important; pointer-events:none !important; 
   <section class="rsvp-cta" id="rsvp-section">
     <div class="section-mark">&#10039;</div>
     <div class="section-label">참석 여부</div>
-    <p class="rsvp-sub">참석 여부를 알려주시면<br>준비에 큰 도움이 됩니다</p>
+    <p class="rsvp-sub">참석 여부를 알려주시면<br>준비에 큰 도움이 됩니다.</p>
     <button class="rsvp-trigger" onclick="openModal('rsvp-modal')">참석 여부 전달하기</button>
   </section>
 
@@ -5580,7 +5591,7 @@ function copyLink(){
 // ---------- 티켓 뜯어지는 효과음 ----------
 (function(){
   let snd;
-  try { snd = new Audio('tear.mp3?v=3'); snd.preload = 'auto'; snd.volume = 0.15; snd.load(); } catch(_) { return; }
+  try { snd = new Audio('tear.mp3?v=4'); snd.preload = 'auto'; snd.volume = 0.15; snd.load(); } catch(_) { return; }
   window.playTearSound = function(){
     // 터치로 열든 자동으로 열리든 재생 시도 (자동일 땐 브라우저 정책에 따라 막힐 수 있음)
     try {
@@ -5610,6 +5621,20 @@ function copyLink(){
   const upd = () => document.body.classList.toggle('bgm-hide', !!document.querySelector(sel));
   new MutationObserver(upd).observe(document.body, { subtree:true, attributes:true, attributeFilter:['class'] });
   upd();
+})();
+
+// 사진 넘길 때 세로 흔들림 방지: 가로 스와이프 중에는 세로 스크롤을 막음
+(function(){
+  const area=document.querySelector('.gallery'); if(!area) return;
+  let sx=0,sy=0,axis=null;
+  area.addEventListener('touchstart',e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;axis=null;},{passive:true});
+  area.addEventListener('touchmove',e=>{
+    const t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+    if(!axis&&(Math.abs(dx)>6||Math.abs(dy)>6)) axis=Math.abs(dx)>Math.abs(dy)*0.7?'x':'y';
+    if(axis==='x'&&e.cancelable) e.preventDefault();
+  },{passive:false});
+  const lb=document.getElementById('gallery-lightbox');
+  if(lb) lb.addEventListener('touchmove',e=>{ if(e.cancelable) e.preventDefault(); },{passive:false});
 })();
 </script>
 </body>
