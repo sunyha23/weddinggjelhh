@@ -5388,7 +5388,11 @@ async function shareKakao(){
         imageWidth: 1200,
         imageHeight: 630,
         link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL }
-      }
+      },
+      buttons: [{
+        title: '모바일 청첩장 보기',
+        link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL }
+      }]
     });
     return;
   } catch(err) {
