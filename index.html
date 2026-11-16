@@ -10,11 +10,11 @@
 <meta property="og:title" content="2027년 2월 20일 토요일 19:00">
 <meta property="og:description" content="더채플앳청담 채플홀 6F">
 <meta property="og:url" content="https://jueunhanheum.site/">
-<meta property="og:image" content="https://jueunhanheum.site/thumbnail2.jpg">
+<meta property="og:image" content="https://jueunhanheum.site/thumbnail3.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://jueunhanheum.site/thumbnail2.jpg">
+<meta name="twitter:image" content="https://jueunhanheum.site/thumbnail3.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Batang:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -3951,6 +3951,11 @@ body.bgm-hide #bgmToggle{ opacity:0 !important; pointer-events:none !important; 
 }
 body.gal-dragging{ overflow:hidden !important; overscroll-behavior:none; }
 .gallery-stage.gal-x, .gallery.gal-x{ touch-action:none !important; }
+/* 티켓 바깥 그림자 제거: 마스크(구멍) 가장자리에서 그림자가 끊겨 실선처럼 보이던 문제 (사파리/카톡) */
+.save-ticket,
+#introBackdrop .save-ticket{
+  box-shadow: inset 0 0 60px rgba(31,58,117,0.12) !important;
+}
 /* Local preview: closing photo above the contact button. */
 .invite .closing-scripture {
   margin: 30px auto 24px !important;
@@ -5493,7 +5498,7 @@ async function shareKakao(){
       content: {
         title: '2027년 2월 20일 토요일 19:00',
         description: '더채플앳청담 채플홀 6F',
-        imageUrl: 'https://jueunhanheum.site/thumbnail2.jpg',
+        imageUrl: 'https://jueunhanheum.site/thumbnail3.jpg',
         imageWidth: 1200,
         imageHeight: 630,
         link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL }
@@ -5591,7 +5596,7 @@ function copyLink(){
 // ---------- 티켓 뜯어지는 효과음 ----------
 (function(){
   let snd;
-  try { snd = new Audio('tear.mp3?v=4'); snd.preload = 'auto'; snd.volume = 0.15; snd.load(); } catch(_) { return; }
+  try { snd = new Audio('tear.mp3?v=7'); snd.preload = 'auto'; snd.volume = 0.15; snd.load(); } catch(_) { return; }
   window.playTearSound = function(){
     // 터치로 열든 자동으로 열리든 재생 시도 (자동일 땐 브라우저 정책에 따라 막힐 수 있음)
     try {
